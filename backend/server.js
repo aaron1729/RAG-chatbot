@@ -26,9 +26,9 @@ app.post("/api/chat", async (req, res) => {
             max_tokens: 1024,
             messages: req.body.messages
         });
-        console.log("here's response:")
+        console.log("here's the response:")
         Object.entries(response).forEach(([key, value]) => {
-            console.log(key, value)
+            console.log(`${key}: ${value}`)
         })
         res.json({content: response.content[0].text});
         console.log(`response received! and it is: ${response.content[0].text}`)

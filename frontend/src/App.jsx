@@ -21,7 +21,7 @@ function App() {
     setInput("")
     setIsLoading(true);
     try {
-      const responseText = await sendMessage(messages)
+      const responseText = await sendMessage(newMessages)
       // setMessages([...messages, {role: "assistant", content: responseText}])
       setMessages([...newMessages, {role: "assistant", content: responseText}])
     } catch (error) {
