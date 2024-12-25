@@ -4,7 +4,7 @@ import './App.css';
 import ChatHistory from './components/ChatHistory.jsx';
 import MessageWindow from './components/MessageWindow.jsx';
 import TextInput from './components/TextInput.jsx';
-import {sendMessage} from './services/anthropic.js';
+import { sendMessage } from './services/anthropic.js';
 
 function App() {
   const [messages, setMessages] = useState([
