@@ -5,6 +5,15 @@ import ReactMarkdown from "react-markdown";
 
 function MessageBubble({ role, content }) {
     const sanitizedContent = DOMPurify.sanitize(content);
+    console.log(`the sanitizedContent is:\n${sanitizedContent}`)
+    const lines = sanitizedContent.split("\n")
+    const extendedLines = lines.map(line => {
+        if (!line.trim()) {
+            line += "&nbsp;";
+        }
+        return line + "  "
+    })
+    const displayContent = extendedLines.join("\n")
     return (
         <div className={`flex ${role === "user" ? "justify-end" : "justify-start"}`}>
             <div className={`max-w-[80%] p-4 rounded-lg ${
@@ -12,7 +21,7 @@ function MessageBubble({ role, content }) {
                     ? "bg-blue-500 text-gray-200 text-left"
                     : "bg-gray-100 text-gray-900 text-left"
             }`}>
-                <ReactMarkdown>{sanitizedContent}</ReactMarkdown>
+                <ReactMarkdown>{displayContent}</ReactMarkdown>
             </div>
         </div>
     )

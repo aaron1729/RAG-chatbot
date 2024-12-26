@@ -32,7 +32,7 @@ function App() {
 
   return (
     <div className="flex h-screen bg-gray-200">
-      <ChatHistory />
+      {/* <ChatHistory /> */}
       <div className="flex flex-col flex-1">
         <MessageWindow messages={messages} />
         <TextInput
