@@ -27,6 +27,9 @@ function App() {
       console.log("error:", error)
     } finally {
       setIsLoading(false)
+      setTimeout(() => {
+        document.getElementById('text-input').focus(); // focus after state update
+      }, 0);
     }
   }
 

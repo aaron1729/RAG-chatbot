@@ -5,6 +5,7 @@ function TextInput({ input, setInput, handleSubmit, isLoading }) {
     return (
         <form onSubmit={handleSubmit} className="border-t p-4">
             <textarea
+                id="text-input"
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
