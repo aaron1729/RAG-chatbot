@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 // the `chatHistory` props is a list of ChatThread objects (each with keys `id` and `title).
 function ChatHistory({ chatHistory }) {
 
+    const [isAnyDropdownOpen, setIsAnyDropdownOpen] = useState(false)
+
     // the position of a ChatThreadMenu, should it exist
     const [chatThreadMenuPosition, setChatThreadMenuPosition] = useState({top: null, left: null})
 
@@ -20,6 +22,8 @@ function ChatHistory({ chatHistory }) {
                             chatThread={chatThread}
                             chatThreadMenuPosition={chatThreadMenuPosition}
                             setChatThreadMenuPosition={setChatThreadMenuPosition}
+                            isAnyDropdownOpen={isAnyDropdownOpen}
+                            setIsAnyDropdownOpen={setIsAnyDropdownOpen}
                         />
                     </div>
                 )

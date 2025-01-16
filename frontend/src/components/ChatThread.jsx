@@ -1,14 +1,19 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { MoreVertical } from 'lucide-react';
 import ChatThreadMenu from './ChatThreadMenu';
 
 // the props `chatThread` is an object with keys `id` and `title`.
-function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMenuPosition }) {
+function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMenuPosition, isAnyDropdownOpen, setIsAnyDropdownOpen }) {
     
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const buttonRef = useRef(null);
+
+    useEffect(() => {
+        // this indeed computes the `&&` of all instances of `isDropdownOpen` because only at most one of them will ever be set to `true`.
+        setIsAnyDropdownOpen(isDropdownOpen)
+    }, [isDropdownOpen, setIsAnyDropdownOpen])
 
     function onClick () {
         console.log("onClick fired in ChatThread.jsx at index", index)
@@ -33,7 +38,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
                 <MoreVertical
                     style={{
                         marginRight: '5px',
-                        opacity: isHovered ? 1 : 0, // control visibility using opacity
+                        opacity: ((isHovered && !isAnyDropdownOpen) || isDropdownOpen) ? 1 : 0, // control visibility using opacity
                         transition: 'opacity 0.1s' // smooth transition for visibility
                     }}
                     ref={buttonRef}
@@ -55,6 +60,7 @@ ChatThread.propTypes = {
     chatThreadMenuPosition: PropTypes.object,
     setChatThreadMenuPosition: PropTypes.func,
     index: PropTypes.number,
+    setIsAnyDropdownOpen: PropTypes.func,
 }
 
 export default ChatThread
