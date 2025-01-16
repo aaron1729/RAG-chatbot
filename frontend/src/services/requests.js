@@ -19,7 +19,6 @@ export async function sendMessage(threadId, messages) {
     }
 }
 
-// NOT YET USED
 export async function sendNewThreadName(threadId, title) {
     try {
         console.log("inside of the async function updateThread (on the frontend)")

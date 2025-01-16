@@ -3,7 +3,7 @@ import ChatThread from "./ChatThread";
 import PropTypes from 'prop-types';
 
 // the `chatHistory` props is a list of ChatThread objects (each with keys `id` and `title).
-function ChatHistory({ chatHistory, setChatHistory, renameThread }) {
+function ChatHistory({ chatHistory, setChatHistory, renameThread, currentThreadId, setCurrentThreadId, setMessages }) {
 
     const [isAnyDropdownOpen, setIsAnyDropdownOpen] = useState(false)
 
@@ -25,6 +25,9 @@ function ChatHistory({ chatHistory, setChatHistory, renameThread }) {
                             isAnyDropdownOpen={isAnyDropdownOpen}
                             setIsAnyDropdownOpen={setIsAnyDropdownOpen}
                             renameThread={renameThread}
+                            currentThreadId={currentThreadId}
+                            setCurrentThreadId={setCurrentThreadId}
+                            setMessages={setMessages}
                         />
                     </div>
                 )
@@ -37,6 +40,9 @@ ChatHistory.propTypes = {
     chatHistory: PropTypes.array,
     setChatHistory: PropTypes.func,
     renameThread: PropTypes.func,
+    currentThreadId: PropTypes.number,
+    setCurrentThreadId: PropTypes.func,
+    setMessages: PropTypes.func,
 }
 
 export default ChatHistory

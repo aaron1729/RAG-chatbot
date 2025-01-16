@@ -29,7 +29,7 @@ db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS messages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         thread_id INTEGER REFERENCES threads(id),
-        message TEXT NOT NULL,
+        content TEXT NOT NULL,
         role TEXT CHECK(role IN ('user', 'assistant')) NOT NULL,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);

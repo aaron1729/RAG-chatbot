@@ -8,6 +8,12 @@ function Modal({ isOpen, setIsOpen, type, params }) {
         const handleKeyDown = (event) => {
             if (event.key === 'Escape') {
                 setIsOpen(false);
+                if (params.setIsDropdownOpen) {
+                    params.setIsDropdownOpen(false);
+                }
+                if (params.setIsHovered) {
+                    params.setIsHovered(false);
+                }
             }
         };
 
@@ -16,7 +22,7 @@ function Modal({ isOpen, setIsOpen, type, params }) {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [setIsOpen]);
+    }, [setIsOpen, params]);
 
     if (!isOpen) return null;
 
@@ -37,8 +43,14 @@ function Modal({ isOpen, setIsOpen, type, params }) {
         modalProperties.handleSubmit = async () => {
             const newThreadName = document.getElementById('modal-input').value;
             await sendNewThreadName(params.threadId, newThreadName);
-            params.renameThread(params.threadId, newThreadName)
+            params.renameThread(params.threadId, newThreadName);
             setIsOpen(false);
+            if (params.setIsDropdownOpen) {
+                params.setIsDropdownOpen(false);
+            }
+            if (params.setIsHovered) {
+                params.setIsHovered(false);
+            }
         }
     }
 

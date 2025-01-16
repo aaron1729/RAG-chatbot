@@ -4,7 +4,7 @@ import './App.css';
 import Sidebar from './components/Sidebar.jsx';
 import MessageWindow from './components/MessageWindow.jsx';
 import TextInput from './components/TextInput.jsx';
-import { sendMessage, getChatHistory } from './services/requests.js';
+import { sendMessage, getChatHistory, getChatThread } from './services/requests.js';
 
 function App() {
 
@@ -38,7 +38,7 @@ function App() {
     async function getChatHistoryHere() {
       try {
         const chatHistory = await getChatHistory(userId)
-        setChatHistory(chatHistory)
+        setChatHistory(chatHistory.reverse())
       } catch (e) {
         console.error("error getting chat history:", e)
       }
@@ -86,6 +86,9 @@ function App() {
       <Sidebar
         chatHistory={chatHistory}
         renameThread={renameThread}
+        currentThreadId={currentThreadId}
+        setCurrentThreadId={setCurrentThreadId}
+        setMessages={setMessages}
       />
       <div className="flex flex-col flex-1">
         <MessageWindow messages={messages} />

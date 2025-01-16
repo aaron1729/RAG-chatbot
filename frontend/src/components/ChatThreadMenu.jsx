@@ -32,9 +32,9 @@ function ChatThreadMenu({ isOpen, setIsOpen, position, buttonRef, setShowOptions
     useEffect(() => {
         if (!isModalOpen) {
             setShowOptionsButton(false);
+            setIsOpen(false);
         }
     }, [isModalOpen]);
-
 
     if (!isOpen) return null;
 
@@ -44,11 +44,8 @@ function ChatThreadMenu({ isOpen, setIsOpen, position, buttonRef, setShowOptions
     const spaceNeededBelow = 140;
     // i can just hard-code this and tweak as needed after experimentation.
     const verticalJump = 115;
-
-
+    // now, adjust the "top" value as needed.
     const adjustedTop = availableSpaceBelow < spaceNeededBelow ? position.top - verticalJump : position.top;
-    
-
     
     return ReactDOM.createPortal(
         <>
@@ -94,7 +91,12 @@ function ChatThreadMenu({ isOpen, setIsOpen, position, buttonRef, setShowOptions
                 isOpen={isModalOpen}
                 setIsOpen={setIsModalOpen}
                 type={modalType}
-                params={{threadId, renameThread}}
+                params={{
+                    threadId,
+                    renameThread,
+                    setIsDropdownOpen: setIsOpen,
+                    setIsHovered: () => setShowOptionsButton(false)
+                }}
             />
         </>,
         document.body

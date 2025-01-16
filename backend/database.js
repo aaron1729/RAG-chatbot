@@ -50,11 +50,11 @@ function getThreads(userId) {
 // since this is an async operation, return a promise, which hopefully resolves to the message id.
 function insertMessage(threadId, role, message) {
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO messages (thread_id, role, message) VALUES (?, ?, ?)`, [threadId, role, message], function(e) {
+        db.run(`INSERT INTO messages (thread_id, role, content) VALUES (?, ?, ?)`, [threadId, role, message], function(e) {
             if (e) {
                 return reject(e);
             }
-            console.log(`inserted a message into the messages table with id ${this.lastID}: role is "${role}" and message is\n${message}`);
+            console.log(`inserted a message into the messages table with id ${this.lastID}: role is "${role}" and content is\n${message}`);
             resolve(this.lastID);
         });
     });
@@ -62,7 +62,7 @@ function insertMessage(threadId, role, message) {
 
 function getMessages(threadId) {
     return new Promise((resolve, reject) => {
-        db.all(`SELECT role, message FROM messages WHERE thread_id = ?`, [threadId], (e, rows) => {
+        db.all(`SELECT role, content FROM messages WHERE thread_id = ?`, [threadId], (e, rows) => {
             if (e) {
                 return reject(e);
             }
