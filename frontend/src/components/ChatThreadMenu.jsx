@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import { Pencil, Trash2 } from 'lucide-react';
 // import { Menu, MenuItems, MenuItem } from '@headlessui/react';
 
 
@@ -27,16 +28,27 @@ function ChatThreadMenu({ isOpen, setIsOpen, position, buttonRef }) {
         return () => {
             document.removeEventListener("mousdown", handleClickOutside);
         }
-    }, [setIsOpen])
+    }, [setIsOpen, buttonRef])
     
     if (!isOpen) return null;
+
+    // calculate the available space below the button. this might get screwed up on a teeny tiny screen, but oh well.
+    const availableSpaceBelow = window.innerHeight - position.top;
+    // i can just hard-code this and tweak as needed after experimentation.
+    const spaceNeededBelow = 140;
+    // i can just hard-code this and tweak as needed after experimentation.
+    const verticalJump = 115;
+
+
+    const adjustedTop = availableSpaceBelow < spaceNeededBelow ? position.top - verticalJump : position.top;
+    
     
     return ReactDOM.createPortal(
         <div
             ref={menuRef}
             className="absolute bg-white border border-gray-300 shadow-lg p-2 rounded top-0"
             style={{
-                top: position.top,
+                top: adjustedTop,
                 left: position.left,
                 width: 'auto',
                 zIndex: 1 // so that this "stacks" on top of other things
@@ -46,15 +58,19 @@ function ChatThreadMenu({ isOpen, setIsOpen, position, buttonRef }) {
             <ul className="text-sm">
                 <li
                     className="p-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => {console.log("onClick fired for option 1")}}
+                    onClick={() => {console.log("onClick fired for 'rename thread'")}}
                 >
-                    rename thread
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Pencil size={15} /> &nbsp; rename thread
+                    </div>
                 </li>
                 <li
                     className="p-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => {console.log("onClick fired for option 2")}}
+                    onClick={() => {console.log("onClick fired for 'delete thread'")}}
                 >
-                    delete thread
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Trash2 size={15} /> &nbsp; delete thread
+                    </div>
                 </li>
             </ul>
         </div>,
