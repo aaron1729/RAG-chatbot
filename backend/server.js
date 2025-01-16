@@ -8,7 +8,7 @@ const apiKey = process.env.VITE_ANTHROPIC_API_KEY
 const app = express();
 app.use(express.json())
 
-const { insertThread, renameThread, getThreads, insertMessage, closeDatabase } = require("./database.js");
+const { insertThread, renameThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database.js");
 
 // middleware
 app.use(express.json());
@@ -64,7 +64,7 @@ app.post("/api/chat", async (req, res) => {
     }
 })
 
-// handle requests to get chat history.
+// handle requests to get a user's chat history.
 app.post("/api/getChatHistory", async (req, res) => {
     console.log("inside of the `/api/getChatHistory` endpoint handler")
     const { userId } = req.body
@@ -77,7 +77,21 @@ app.post("/api/getChatHistory", async (req, res) => {
         console.error(`error getting chat history: ${e}`);
         res.status(500).json({error:e.message})
     }
+})
 
+// handle requests to get a thread's messages.
+app.post("/api/getChatThread", async (req, res) => {
+    console.log("inside of the `/api/getChatThread/` endpoint handler")
+    const { threadId } = req.body
+    try {
+        const messages = await getMessages(threadId)
+        console.log("the messages are...")
+        messages.forEach(message => {console.log(message.role + ": " + message.content)});
+        res.json(messages)
+    } catch (e) {
+        console.error(`error getting chat thread: ${e}`);
+        res.status(500).json({error:e.message})
+    }
 })
 
 

@@ -1,25 +1,26 @@
+import { useState } from "react";
 import ChatThread from "./ChatThread";
 import PropTypes from 'prop-types';
 
+// the `chatHistory` props is a list of ChatThread objects (each with keys `id` and `title).
 function ChatHistory({ chatHistory }) {
-    console.log(`inside of ChatHistory; chatHistory.length is ${chatHistory.length}, and (assuming it's nonempty) it is as follows:`)
-    chatHistory.forEach(X => {
-        for (const [key, value] of Object.entries(X)) {
-            console.log(`key: ${key}; value: ${value}`)
-        }
-    })
-    if (chatHistory.length) {
-        console.log("chatHistory[0] id:", chatHistory[0].id)
-        console.log("chatHistory[0] title:", chatHistory[0].title)
-    }
+
+    // the position of a ChatThreadMenu, should it exist
+    const [chatThreadMenuPosition, setChatThreadMenuPosition] = useState({top: null, left: null})
+
+    const margin = "5px"
+
     return (
-        <div>
+        <div style={{ marginTop: margin }}>
             {chatHistory.map((chatThread, index) => {
                 return (
-                    <ChatThread
-                        key={index}
-                        chatThread={chatThread}
-                    />
+                    <div key={index} style={{ marginBottom: margin }}>
+                        <ChatThread
+                            chatThread={chatThread}
+                            chatThreadMenuPosition={chatThreadMenuPosition}
+                            setChatThreadMenuPosition={setChatThreadMenuPosition}
+                        />
+                    </div>
                 )
             })}
         </div>

@@ -33,7 +33,7 @@ export async function sendNewThreadName(threadId, title) {
         return data;
     } catch (error) {
         console.error("error updating thread:", error);
-        throw error
+        throw error;
     }
 }
 
@@ -52,6 +52,25 @@ export async function getChatHistory(userId) {
         return data
     } catch (error) {
         console.error("error getting chat history:", error);
-        throw error
+        throw error;
+    }
+}
+
+export async function getChatThread(threadId) {
+    try {
+        console.log("inside of the async function getChatThread (on the frontend)")
+        const response = await fetch("/api/getChatThread/:threadId", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({threadId})
+        });
+        if (!response.ok) {
+            throw new Error("response not ok in getChatThread")
+        }
+        const data = await response.json();
+        return data
+    } catch (error) {
+        console.error(`error getting chat thread with threadId ${threadId}:`, error);
+        throw error;
     }
 }

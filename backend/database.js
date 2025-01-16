@@ -60,6 +60,18 @@ function insertMessage(threadId, role, message) {
     });
 };
 
+function getMessages(threadId) {
+    return new Promise((resolve, reject) => {
+        db.all(`SELECT role, message FROM messages WHERE thread_id = ?`, [threadId], (e, rows) => {
+            if (e) {
+                return reject(e);
+            }
+            console.log(`fetched messages for thread with id ${threadId}`);
+            resolve(rows);
+        });
+    });
+};
+
 function closeDatabase() {
     db.close((e) => {
         if (e) {
@@ -74,5 +86,6 @@ module.exports = {
     renameThread,
     getThreads,
     insertMessage,
+    getMessages,
     closeDatabase,
 };

@@ -7,22 +7,34 @@ import TextInput from './components/TextInput.jsx';
 import { sendMessage, sendNewThreadName, getChatHistory } from './services/requests.js';
 
 function App() {
+
+  // messages for the current thread
   const [messages, setMessages] = useState([
     {role: "assistant", content: "Hello there! How can I help you today?"}
   ]);
+
+  // text input
   const [input, setInput] = useState("");
+  
+  // whether we're currently getting a chat response
   const [isLoading, setIsLoading] = useState(false);
-  // this begins as `null`. it always gets sent to the server with the message, and if it's null then the server responds with a new value for it.
+  
+  // current thread id
+  // this begins as `null`. it always gets sent to the server with the messages, and if it's null then the server responds with a new value for it, which we then set.
+  // additionally, this can be changed from a non-null value to another one when the user clicks on a thread in the sidebar, and then we change everything!
   const [currentThreadId, setCurrentThreadId] = useState(null);
-  // this is currently hard-coded as 5. it needs to exist, just so that we can get the chat history.
+  
+  // user id
+  // this is currently hard-coded as 5. it needs to exist, since user ids are set up in the database.
   const userId = 5
   
-  
-  // this begins as `null`. as soon as the app is loaded, we send a request to the server to get the history.
+  // a list of objects representing past chat threads (with keys `id` and `title`), from most to least recent
+  // this begins as `null`. via `useEffect`, as soon as the app is loaded we send a request to the server to get the chat history and then reset it.
   const [chatHistory, setChatHistory] = useState([])
 
   // this will run as soon as the component mounts.
   useEffect(() => {
+    // for silly reasons, one must _define_ an async function _inside_ of the `useEffect` callback, as is done here.
     async function getChatHistoryHere() {
       try {
         const chatHistory = await getChatHistory(userId)
@@ -32,7 +44,7 @@ function App() {
       }
     }
     getChatHistoryHere()
-  }, [])  
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault() // to stop the browser from reloading the whole page
