@@ -1,11 +1,8 @@
+a silly little chatbot for chatting with RAG for previous chat threads.
+
 built using react + vite.
 
 ---
-
-**idea 1**: chat with RAG for documents.
-
-**idea 2**: chat with RAG for previous chat threads.
-
 
 **to do (in order)**
 - turn ChatHistory into Sidebar, with header and a chathistory components.

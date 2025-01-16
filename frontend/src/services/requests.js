@@ -59,7 +59,7 @@ export async function getChatHistory(userId) {
 export async function getChatThread(threadId) {
     try {
         console.log("inside of the async function getChatThread (on the frontend)")
-        const response = await fetch("/api/getChatThread/:threadId", {
+        const response = await fetch("/api/getChatThread", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({threadId})

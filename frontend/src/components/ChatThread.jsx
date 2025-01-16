@@ -7,6 +7,7 @@ import ChatThreadMenu from './ChatThreadMenu';
 function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMenuPosition }) {
     
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
     const buttonRef = useRef(null);
 
     function onClick () {
@@ -23,10 +24,21 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
     }
 
     return (
-        <div>
+        <div
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ marginLeft: '10px' }} onClick={() => {}}>{chatThread.title}</span>
-                <MoreVertical style={{ marginRight: '5px' }} ref={buttonRef} onClick={onClick} />
+                <MoreVertical
+                    style={{
+                        marginRight: '5px',
+                        opacity: isHovered ? 1 : 0, // control visibility using opacity
+                        transition: 'opacity 0.1s' // smooth transition for visibility
+                    }}
+                    ref={buttonRef}
+                    onClick={onClick}
+                />
                 <ChatThreadMenu
                     isOpen={isDropdownOpen}
                     setIsOpen={setIsDropdownOpen}

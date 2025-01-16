@@ -48,13 +48,13 @@ function ChatThreadMenu({ isOpen, setIsOpen, position, buttonRef }) {
                     className="p-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {console.log("onClick fired for option 1")}}
                 >
-                    option 1
+                    rename thread
                 </li>
                 <li
                     className="p-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {console.log("onClick fired for option 2")}}
                 >
-                    option 2
+                    delete thread
                 </li>
             </ul>
         </div>,
