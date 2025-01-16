@@ -13,6 +13,7 @@ built using react + vite.
 - display chat history.
 - in a new chat, once the current chat is created, highlight it. but also, highlight other older chats when we jump back to those.
 - add a "new chat" button to the header.
+- allow user to change the title of the thread using the `updateThread` function.
 
 
 

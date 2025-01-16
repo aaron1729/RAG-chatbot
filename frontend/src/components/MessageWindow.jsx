@@ -20,7 +20,7 @@ function MessageWindow({ messages }) {
         >
             <div className="space-y-3">
                 {messages.map((message, index) => (
-                    // the key should eventualy be a more unique id, e.g. messages could be id'd by timestamp and user-id
+                    // the key should eventually be a more unique id (e.g. the message id)
                     <MessageBubble
                         key={index}
                         role={message.role}

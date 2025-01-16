@@ -32,7 +32,20 @@ function renameThread(threadId, title) {
             resolve(true);
         });
     });
-}
+};
+
+// since this is an async operation, return a promise, which hopefully resolves to the array of thread titles and ids for the given user id.
+function getThreads(userId) {
+    return new Promise((resolve, reject) => {
+    db.all(`SELECT id, title FROM threads WHERE user_id = ?`, [userId], (e, rows) => {
+        if (e) {
+            return reject(e);
+        }
+        console.log(`fetched threads for user with id ${userId}`);
+        resolve(rows);
+    });
+    });
+};
 
 // since this is an async operation, return a promise, which hopefully resolves to the message id.
 function insertMessage(threadId, role, message) {
@@ -59,6 +72,7 @@ function closeDatabase() {
 module.exports = {
     insertThread,
     renameThread,
+    getThreads,
     insertMessage,
     closeDatabase,
 };
