@@ -16,6 +16,7 @@ function ChatHistory({ chatHistory }) {
                 return (
                     <div key={index} style={{ marginBottom: margin }}>
                         <ChatThread
+                            index={index}
                             chatThread={chatThread}
                             chatThreadMenuPosition={chatThreadMenuPosition}
                             setChatThreadMenuPosition={setChatThreadMenuPosition}
