@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import './App.css';
 // import MessageBubble from './components/MessageBubble.jsx'
-import ChatHistory from './components/ChatHistory.jsx';
+import Sidebar from './components/Sidebar.jsx';
 import MessageWindow from './components/MessageWindow.jsx';
 import TextInput from './components/TextInput.jsx';
-import { sendMessage } from './services/anthropic.js';
+import { sendMessage, updateThread } from './services/requests.js';
 
 function App() {
   const [messages, setMessages] = useState([
@@ -12,10 +12,14 @@ function App() {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  // this begins as `null`. it always gets sent to the server with the message, and if it's null then the server responds with a new value for it.
+  const [currentThreadId, setCurrentThreadId] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault() // to stop the browser from reloading the whole page
-    if (!input) return
+    if (!input.trim()) return    
+
+
     const newMessages = [...messages, {role: "user", content: input}]
     setMessages(newMessages)
     setInput("")
@@ -31,11 +35,18 @@ function App() {
         document.getElementById('text-input').focus(); // focus after state update
       }, 0);
     }
+
+
+    // just to test it, do `updateThread` here.
+    const output = await updateThread("the title")
+    console.log(`after calling updateThread, the return value is ${output}`)
+  
+  
   }
 
   return (
     <div className="flex h-screen bg-gray-200">
-      {/* <ChatHistory /> */}
+      <Sidebar />
       <div className="flex flex-col flex-1">
         <MessageWindow messages={messages} />
         <TextInput

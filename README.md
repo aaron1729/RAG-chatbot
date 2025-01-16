@@ -2,8 +2,20 @@ built using react + vite.
 
 ---
 
-**to do (in order?)**
-- turn ChatHistory into Sidebar or something, and add buttons at the top for "new chat" and "upload docs".
+**idea 1**: chat with RAG for documents.
+
+**idea 2**: chat with RAG for previous chat threads.
+
+
+**to do (in order)**
+- turn ChatHistory into Sidebar, with header and a chathistory components.
+- save chats to a database.
+- display chat history.
+- in a new chat, once the current chat is created, highlight it. but also, highlight other older chats when we jump back to those.
+- add a "new chat" button to the header.
+
+
+
 - allow uploading docs, maybe with a pop-up modal.
 - if saving these on the server (instead of e.g. an S3 bucket), maybe add a listener to delete the data if it's associated to a past chat.
 

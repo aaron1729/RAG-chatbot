@@ -5,7 +5,6 @@ import ReactMarkdown from "react-markdown";
 
 function MessageBubble({ role, content }) {
     const sanitizedContent = DOMPurify.sanitize(content);
-    console.log(`the sanitizedContent is:\n${sanitizedContent}`)
     const lines = sanitizedContent.split("\n")
     const extendedLines = lines.map(line => {
         if (!line.trim()) {
