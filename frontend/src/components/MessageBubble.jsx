@@ -27,9 +27,9 @@ function MessageBubble({ role, content }) {
 }
 
 MessageBubble.propTypes = {
-    // index: PropTypes.number.isRequired,
-    role: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired
+    // index: PropTypes.number,
+    role: PropTypes.string,
+    content: PropTypes.string,
 }
 
 export default MessageBubble

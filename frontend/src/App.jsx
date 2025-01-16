@@ -4,7 +4,7 @@ import './App.css';
 import Sidebar from './components/Sidebar.jsx';
 import MessageWindow from './components/MessageWindow.jsx';
 import TextInput from './components/TextInput.jsx';
-import { sendMessage, sendNewThreadName, getChatHistory } from './services/requests.js';
+import { sendMessage, getChatHistory } from './services/requests.js';
 
 function App() {
 
@@ -46,6 +46,16 @@ function App() {
     getChatHistoryHere()
   }, [])
 
+  function renameThread(threadId, title) {
+    const newChatHistory = chatHistory.map(chatThread => {
+      if (chatThread.id === threadId) {
+        return {id: chatThread.id, title: title}
+      } else {
+        return chatThread
+      }})
+    setChatHistory(newChatHistory)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault() // to stop the browser from reloading the whole page
     if (!input.trim()) return
@@ -73,7 +83,10 @@ function App() {
 
   return (
     <div className="flex h-screen bg-gray-200">
-      <Sidebar chatHistory={chatHistory} />
+      <Sidebar
+        chatHistory={chatHistory}
+        renameThread={renameThread}
+      />
       <div className="flex flex-col flex-1">
         <MessageWindow messages={messages} />
         <TextInput

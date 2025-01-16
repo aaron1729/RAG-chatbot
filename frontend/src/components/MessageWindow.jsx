@@ -33,7 +33,7 @@ function MessageWindow({ messages }) {
 }
 
 MessageWindow.propTypes = {
-    messages: PropTypes.object.isRequired
+    messages: PropTypes.object,
 }
 
 export default MessageWindow

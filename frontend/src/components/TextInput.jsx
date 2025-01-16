@@ -28,10 +28,10 @@ function TextInput({ input, setInput, handleSubmit, isLoading }) {
 }
 
 TextInput.propTypes = {
-    input: PropTypes.string.isRequired,
-    setInput: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired
+    input: PropTypes.string,
+    setInput: PropTypes.func,
+    handleSubmit: PropTypes.func,
+    isLoading: PropTypes.bool,
 }
 
 export default TextInput

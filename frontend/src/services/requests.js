@@ -1,3 +1,5 @@
+// note: these should always be imported _directly_ into the relevant component! there's no need for them to be passed as props.
+
 export async function sendMessage(threadId, messages) {
     try {
         console.log("inside of the async function sendMessages (on the frontend)")
@@ -17,6 +19,7 @@ export async function sendMessage(threadId, messages) {
     }
 }
 
+// NOT YET USED
 export async function sendNewThreadName(threadId, title) {
     try {
         console.log("inside of the async function updateThread (on the frontend)")
@@ -56,6 +59,7 @@ export async function getChatHistory(userId) {
     }
 }
 
+// NOT YET USED
 export async function getChatThread(threadId) {
     try {
         console.log("inside of the async function getChatThread (on the frontend)")

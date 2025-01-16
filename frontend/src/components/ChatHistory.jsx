@@ -3,7 +3,7 @@ import ChatThread from "./ChatThread";
 import PropTypes from 'prop-types';
 
 // the `chatHistory` props is a list of ChatThread objects (each with keys `id` and `title).
-function ChatHistory({ chatHistory }) {
+function ChatHistory({ chatHistory, setChatHistory, renameThread }) {
 
     const [isAnyDropdownOpen, setIsAnyDropdownOpen] = useState(false)
 
@@ -24,6 +24,7 @@ function ChatHistory({ chatHistory }) {
                             setChatThreadMenuPosition={setChatThreadMenuPosition}
                             isAnyDropdownOpen={isAnyDropdownOpen}
                             setIsAnyDropdownOpen={setIsAnyDropdownOpen}
+                            renameThread={renameThread}
                         />
                     </div>
                 )
@@ -33,7 +34,9 @@ function ChatHistory({ chatHistory }) {
 }
 
 ChatHistory.propTypes = {
-    chatHistory: PropTypes.array.isRequired
+    chatHistory: PropTypes.array,
+    setChatHistory: PropTypes.func,
+    renameThread: PropTypes.func,
 }
 
 export default ChatHistory
