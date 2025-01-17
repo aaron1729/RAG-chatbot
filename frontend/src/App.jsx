@@ -8,19 +8,41 @@ import { sendMessage, getChatHistory } from './services/requests.js';
 
 function App() {
 
+  const initialMessage = {role: "assistant", content: "Hello there! How can I help you today?"}
+  
   // messages for the current thread
-  const [messages, setMessages] = useState([
-    {role: "assistant", content: "Hello there! How can I help you today?"}
-  ]);
+  const [messages, setMessagesOriginal] = useState([initialMessage]);
+  
+  // Wrap setMessages to track all calls
+  const setMessages = (newMessages) => {
+    console.log("=== setMessages called ===");
+    console.log("Stack trace:", new Error().stack);
+    console.log("New messages:", newMessages);
+    setMessagesOriginal(newMessages);
+  }
+
+  useEffect(() => {
+    console.log(`messages.length is ${messages.length}`)
+  }, [messages])
 
   // text input
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    // for debugging -- but to keep it clean, only do this when it's reset to the empty string.
+    if (!input) {
+      console.log(`\`input\` is now: ${input}`)
+    }
+  }, [input])
+
   
   // whether we're currently getting a chat response
   const [isLoading, setIsLoading] = useState(false);
-
+  
   // once we're no longer loading a response, focus back on the `'text-input'` element.
   useEffect(() => {
+    // for debugging
+    console.log(`\`isLoading\` is now: ${isLoading}`)
     if (!isLoading) {
       document.getElementById('text-input').focus();
     }
@@ -30,7 +52,30 @@ function App() {
   // this begins as `null`. it always gets sent to the server with the messages, and if it's null then the server responds with a new value for it, which we then set.
   // additionally, this can be changed from a non-null value to another one when the user clicks on a thread in the sidebar, and then we change everything!
   const [currentThreadId, setCurrentThreadId] = useState(null);
+
+  useEffect(() => {
+    // for debugging
+    console.log(`in its own useEffect, \`currentThreadId\` is now ${currentThreadId}`)
+    // if the thread id changes, we should be sure to clear out the chat input. (it's fine to do this even when it changes from `null`, because that occurs just as the first message is coming back.)
+    setInput("");
+  }, [currentThreadId]);
   
+
+
+
+
+  // function startNewChat() {
+  //   console.log("inside of `startNewChat`");
+  //   setCurrentThreadId(null);
+  //   setMessages([initialMessage]);
+  //   setInput("");
+  // }
+
+
+
+
+
+
   // user id
   // this is currently hard-coded as 5. it needs to exist, since user ids are set up in the database.
   const userId = 5
@@ -54,7 +99,9 @@ function App() {
   }, [])
 
   function renameOrRemoveThread(threadId, title) {
+    // AI-GENERATED: add comprehensive state tracking
     if (title) {
+      console.log("renaming thread")
       const newChatHistory = chatHistory.map(chatThread => {
         if (chatThread.id === threadId) {
           return {id: chatThread.id, title: title}
@@ -63,10 +110,40 @@ function App() {
         }})
       setChatHistory(newChatHistory);
     } else {
+      console.log("removing thread")
+      console.log("current messages:", messages);
+      console.log("current threadId:", currentThreadId);
+      console.log("threadId to remove:", threadId);
+      
       const newChatHistory = chatHistory.filter(chatThread => (chatThread.id !== threadId))
       setChatHistory(newChatHistory);
+      
+      if (threadId === currentThreadId) {
+        console.log("=== DELETE CURRENT THREAD ===");
+        console.log("Stack trace:", new Error().stack);
+        console.log("Messages BEFORE setState:", messages);
+        setMessages([initialMessage]);
+        console.log("Messages AFTER setState (but before effect):", messages);
+        setCurrentThreadId(null);
+        setInput("");
+      }
     }
   }
+
+  // AI-GENERATED: add more detailed messages useEffect
+  useEffect(() => {
+    console.log("=== MESSAGES CHANGED ===");
+    console.log("Previous render's messages:", messages);
+    console.log("Stack trace:", new Error().stack);
+  }, [messages]);
+
+  // AI-GENERATED: add detailed messages useEffect
+  useEffect(() => {
+    console.log("messages changed:");
+    console.log("- length:", messages.length);
+    console.log("- content:", messages);
+    console.log("- currentThreadId:", currentThreadId);
+  }, [messages, currentThreadId])
 
   async function handleTextSubmit (e) {
     e.preventDefault() // to stop the browser from reloading the whole page

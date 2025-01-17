@@ -33,7 +33,9 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
     }
 
     async function onThreadClick (event) {
+        console.log("thread clicked, though maybe on options button");
         if (!buttonRef.current.contains(event.target)) {
+            console.log("thread clicked, not on options button");
             setCurrentThreadId(chatThread.id)
             const newMessages = await getChatThread(chatThread.id)
             setMessages(newMessages)
