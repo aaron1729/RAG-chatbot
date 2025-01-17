@@ -31,15 +31,7 @@ function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, 
     }, [setIsOpen, buttonRef, isModalOpen])
     
     useEffect(() => {
-    }, [isModalOpen]);
-    
-    useEffect(() => {
-        // for debugging
         console.log("isModalOpen:", isModalOpen);
-        // 
-        // if (!isModalOpen) {
-        //     setShowOptionsButton(false);
-        // }
     }, [isModalOpen]);
 
     // calculate the available space below the button. this might get screwed up on a teeny tiny screen, but oh well.
@@ -55,16 +47,16 @@ function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, 
         <>
             <div
                 ref={menuRef}
-                // this only gets rendered if `isDropdownOpen` in the above component is `true`. but this should then get _hidden_ if the modal is open.
+                // AI-GENERATED: hide menu when modal is open, but keep modal visible
                 className={`absolute bg-white border border-gray-300 shadow-lg p-2 rounded top-0 ${isModalOpen ? 'hidden' : ''}`}
                 style={{
                     top: adjustedTop,
                     left: position.left,
                     width: 'auto',
-                    zIndex: 1, // so that this "stacks" on top of other things
+                    zIndex: 1,
                 }}
                 onClick={(e) => e.stopPropagation()}
-                >
+            >
                 <ul className="text-sm">
                     <li
                         className="p-2 hover:bg-gray-100 cursor-pointer"
@@ -72,7 +64,7 @@ function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, 
                             console.log("'rename thread' option selected");
                             setModalType("rename-thread");
                             setIsModalOpen(true);
-                            setIsOpen(false);
+                            // setIsOpen(false);
                         }}
                         >
                         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -85,7 +77,7 @@ function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, 
                             console.log("'delete thread' option selected");
                             setModalType("delete-thread");
                             setIsModalOpen(true);
-                            setIsOpen(false);
+                            // setIsOpen(false);
                         }}
                         >
                         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -94,7 +86,7 @@ function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, 
                     </li>
                 </ul>
             </div>
-            {isModalOpen &&
+            {isModalOpen && (
                 <Modal
                     setIsOpen={setIsModalOpen}
                     type={modalType}
@@ -105,7 +97,7 @@ function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, 
                         setIsHovered: () => setShowOptionsButton(false)
                     }}
                 />
-            }
+            )}
         </>,
         document.body
     )
