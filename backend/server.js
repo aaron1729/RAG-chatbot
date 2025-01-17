@@ -1,9 +1,20 @@
 const express = require("express");
-const Anthropic = require("@anthropic-ai/sdk");
 const cors = require("cors");
 
 require("dotenv").config();
-const apiKey = process.env.VITE_ANTHROPIC_API_KEY
+const anthropicApiKey = process.env.VITE_ANTHROPIC_API_KEY
+
+// const OpenAI = require("llama_index.llms.openai");
+// console.log("OpenAI is:", OpenAI)
+
+
+// TO BE REMOVED
+const Anthropic = require("@anthropic-ai/sdk");
+
+
+
+
+
 
 const app = express();
 app.use(express.json())
@@ -16,11 +27,16 @@ app.use(cors({
     origin: "http://localhost:5173" // the vite dev server port
 }))
 
+
+// TO BE REMOVED
 const anthropic = new Anthropic({
-    apiKey: apiKey
+    apiKey: anthropicApiKey
 })
 
-// handle new chats.
+
+
+
+// handle new chat messages.
 app.post("/api/chat", async (req, res) => {
     try {
         console.log("inside of the `/api/chat` endpoint handler")
@@ -42,11 +58,18 @@ app.post("/api/chat", async (req, res) => {
         
         // get a response from the assistant.
         console.log("sending messages...", messages);
+        
+        
+        
+        
+        // this uses anthropic API directly.
         const response = await anthropic.messages.create({
             model: "claude-3-sonnet-20240229",
             max_tokens: 1024,
             messages: messages
         });
+
+
         console.log("here's the response:")
         Object.entries(response).forEach(([key, value]) => {
             console.log(`${key}: ${value}`)
