@@ -20,7 +20,7 @@ function MessageBubble({ role, content }) {
                     ? "bg-blue-500 text-gray-200 rounded"
                     : "bg-gray-100 text-gray-900 rounded"
             }`}>
-                <ReactMarkdown>{displayContent}</ReactMarkdown>
+                <ReactMarkdown className="text-left">{displayContent}</ReactMarkdown>
             </div>
         </div>
     )
