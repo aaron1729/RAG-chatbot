@@ -1,27 +1,23 @@
-const express = require("express");
-const cors = require("cors");
+require("dotenv").config();
+const PYTHON_SERVER_PORT = process.env.PYTHON_SERVER_PORT || 8000;
+const PORT = process.env.PORT || 3000
+
+// database functions
 const { insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database.js");
 
-
-
+// for server
+const express = require("express");
+const cors = require("cors");
 
 // TO BE REMOVED
-
-require("dotenv").config();
-const anthropicApiKey = process.env.VITE_ANTHROPIC_API_KEY
-
-const Anthropic = require("@anthropic-ai/sdk");
-
-
-
-
-
-
+// const anthropicApiKey = process.env.VITE_ANTHROPIC_API_KEY
+// const Anthropic = require("@anthropic-ai/sdk");
+// const anthropic = new Anthropic({
+//     apiKey: anthropicApiKey
+// })
 
 const app = express();
 app.use(express.json())
-
-
 
 // middleware
 app.use(express.json());
@@ -29,50 +25,11 @@ app.use(cors({
     origin: "http://localhost:5173" // the vite dev server port
 }))
 
-
-
-
-
-// Add this somewhere in your express routes
-app.get('/api/test-python', async (req, res) => {
-    try {
-        const response = await fetch('http://localhost:8000/test', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message: "Hello from Node!" })
-        });
-        const data = await response.json();
-        res.json(data);
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: error.message });
-    }
-});
-
-
-
-
-
-
-
-// TO BE REMOVED
-const anthropic = new Anthropic({
-    apiKey: anthropicApiKey
-})
-
-
-
-
-
-
-
-
 // handle new chat messages.
 app.post("/api/chat", async (req, res) => {
     try {
         console.log("inside of the `/api/chat` endpoint handler")
+        
         // if this is a new thread, get a new threadId and save the initial assistant message to the database.
         const { messages } = req.body
         let { threadId } = req.body
@@ -89,33 +46,43 @@ app.post("/api/chat", async (req, res) => {
         // save the user message to the database.
         insertMessage(threadId, "user", messages[messages.length - 1].content)
         
-        // get a response from the assistant.
-        console.log("sending messages...", messages);
-        
-        
-        
-        
-        // this uses anthropic API directly.
-        const response = await anthropic.messages.create({
-            model: "claude-3-sonnet-20240229",
-            max_tokens: 1024,
-            messages: messages
-        });
+        // get a response from the assistant. two ways (one commented-out):
 
-
-        console.log("here's the response:")
-        Object.entries(response).forEach(([key, value]) => {
-            console.log(`${key}: ${value}`)
+        // chat via the llama server...
+        const response = await fetch(`http://localhost:${PYTHON_SERVER_PORT}/chat`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(messages)
         })
-        console.log(`\nand response.content[0].text is: ${response.content[0].text}`)
+        // `response` has only non-enumerable properties, so this doesn't show anything.
+        // console.log(`response: ${JSON.stringify(response)}`)
+        const data = await response.json();
+        console.log(`data: ${JSON.stringify(data)}`);
+        const responseText = data.response;
+        
+        
+        // use the anthropic API directly...
+        // console.log("sending messages...", messages);
+        // const responseOLD = await anthropic.messages.create({
+        //     model: "claude-3-sonnet-20240229",
+        //     max_tokens: 1024,
+        //     messages: messages
+        // });
+        // console.log("here's the response:")
+        // Object.entries(responseOLD).forEach(([key, value]) => {
+        //     console.log(`${key}: ${value}`)
+        // })
+        // console.log(`\nand responseOLD.content[0].text is: ${responseOLD.content[0].text}`)
+        // const responseText = responseOLD.content[0].text
+
 
         // save the assistant message to the database.
-        insertMessage(threadId, "assistant", response.content[0].text)
+        insertMessage(threadId, "assistant", responseText)
         
         // respond with the response, and also with the threadId
         res.json({
             threadId: threadId,
-            content: response.content[0].text
+            content: responseText
         });
     } catch (e) {
         console.error(`error calling anthropic api: ${e}`);
@@ -189,32 +156,6 @@ app.post("/api/deleteChatThread", async (req, res) => {
 
 ////////////////////////////////////////
 
-// proxy route for llama
-app.use("/llama", async (req, res) => {
-    try {
-        const response = await fetch(`http://localhost:8000${req.url}`, {
-            method:req.method,
-            headers: {
-                ...req.headers,
-                "Content-Type": "application/json",
-            },
-            body: ["POST", "PUT", "PATCH"].includes(req.method) ? JSON.stringify(req.body) : undefined
-        });
-        const data = await response.json();
-        res.json(data);
-    } catch (e) {
-        console.error("error proxying to llama server:", e.message);
-        res.status(500).json({error:e.message});
-    }
-})
-
-
-
-
-
-////////////////////////////////////////
-
-const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
     console.log(`server running on port ${PORT}`)
 })
