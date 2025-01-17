@@ -60,21 +60,12 @@ function App() {
     setInput("");
   }, [currentThreadId]);
   
-
-
-
-
-  // function startNewChat() {
-  //   console.log("inside of `startNewChat`");
-  //   setCurrentThreadId(null);
-  //   setMessages([initialMessage]);
-  //   setInput("");
-  // }
-
-
-
-
-
+  function startNewChat() {
+    console.log("inside of `startNewChat`");
+    setCurrentThreadId(null);
+    setMessages([initialMessage]);
+    setInput("");
+  }
 
   // user id
   // this is currently hard-coded as 5. it needs to exist, since user ids are set up in the database.
@@ -99,7 +90,6 @@ function App() {
   }, [])
 
   function renameOrRemoveThread(threadId, title) {
-    // AI-GENERATED: add comprehensive state tracking
     if (title) {
       console.log("renaming thread")
       const newChatHistory = chatHistory.map(chatThread => {
@@ -111,39 +101,14 @@ function App() {
       setChatHistory(newChatHistory);
     } else {
       console.log("removing thread")
-      console.log("current messages:", messages);
-      console.log("current threadId:", currentThreadId);
-      console.log("threadId to remove:", threadId);
-      
       const newChatHistory = chatHistory.filter(chatThread => (chatThread.id !== threadId))
       setChatHistory(newChatHistory);
       
       if (threadId === currentThreadId) {
-        console.log("=== DELETE CURRENT THREAD ===");
-        console.log("Stack trace:", new Error().stack);
-        console.log("Messages BEFORE setState:", messages);
-        setMessages([initialMessage]);
-        console.log("Messages AFTER setState (but before effect):", messages);
-        setCurrentThreadId(null);
-        setInput("");
+        startNewChat();
       }
     }
   }
-
-  // AI-GENERATED: add more detailed messages useEffect
-  useEffect(() => {
-    console.log("=== MESSAGES CHANGED ===");
-    console.log("Previous render's messages:", messages);
-    console.log("Stack trace:", new Error().stack);
-  }, [messages]);
-
-  // AI-GENERATED: add detailed messages useEffect
-  useEffect(() => {
-    console.log("messages changed:");
-    console.log("- length:", messages.length);
-    console.log("- content:", messages);
-    console.log("- currentThreadId:", currentThreadId);
-  }, [messages, currentThreadId])
 
   async function handleTextSubmit (e) {
     e.preventDefault() // to stop the browser from reloading the whole page

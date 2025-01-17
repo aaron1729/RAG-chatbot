@@ -47,7 +47,7 @@ function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, 
         <>
             <div
                 ref={menuRef}
-                // AI-GENERATED: hide menu when modal is open, but keep modal visible
+                // hide the menu when the modal is open, but keep the modal itself visible.
                 className={`absolute bg-white border border-gray-300 shadow-lg p-2 rounded top-0 ${isModalOpen ? 'hidden' : ''}`}
                 style={{
                     top: adjustedTop,
