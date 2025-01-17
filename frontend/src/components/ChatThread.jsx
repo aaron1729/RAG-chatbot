@@ -45,9 +45,6 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
         }
     }
 
-    // Add this to see when the component re-renders
-    console.log('Rendering ChatThread:', chatThread.id, 'Current:', currentThreadId);
-
     return (
         <div
             onMouseEnter={() => setIsHovered(true)}

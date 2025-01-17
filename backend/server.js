@@ -28,8 +28,11 @@ app.post("/api/chat", async (req, res) => {
         const { messages } = req.body
         let { threadId } = req.body
         if (!threadId) {
+            // the `'sv'` is for sweden's standards for formatting the date & time -- a convenient trick for getting "YYYY-MM-DD HH:MM:SS".
+            const timestamp = new Date().toLocaleString('sv')
+            console.log("timestamp is:", timestamp)
             // the first argument is the userId. this is currently hard-coded.
-            threadId = await insertThread(5, "[thread title]")
+            threadId = await insertThread(5, `new thread at ${timestamp}`)
             console.log(`inside of \`/api/chat\` endpoint handler: just made a new thread, with threadId ${threadId}`)
             insertMessage(threadId, "assistant", messages[0].content)
         }
