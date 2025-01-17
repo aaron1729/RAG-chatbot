@@ -34,11 +34,9 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
 
     async function onThreadClick (event) {
         if (!buttonRef.current.contains(event.target)) {
-            console.log('Thread clicked:', chatThread.id, 'Current thread:', currentThreadId);
             setCurrentThreadId(chatThread.id)
             const newMessages = await getChatThread(chatThread.id)
             setMessages(newMessages)
-            console.log('After setting - Thread:', chatThread.id, 'Current thread:', currentThreadId);
         }
     }
 

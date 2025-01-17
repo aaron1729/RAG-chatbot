@@ -58,7 +58,6 @@ export async function getChatHistory(userId) {
     }
 }
 
-// NOT YET USED
 export async function getChatThread(threadId) {
     try {
         console.log("inside of the async function getChatThread (on the frontend)")

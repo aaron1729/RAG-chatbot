@@ -4,7 +4,7 @@ import './App.css';
 import Sidebar from './components/Sidebar.jsx';
 import MessageWindow from './components/MessageWindow.jsx';
 import TextInput from './components/TextInput.jsx';
-import { sendMessage, getChatHistory, getChatThread } from './services/requests.js';
+import { sendMessage, getChatHistory } from './services/requests.js';
 
 function App() {
 

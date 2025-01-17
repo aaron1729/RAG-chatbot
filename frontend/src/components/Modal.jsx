@@ -51,6 +51,8 @@ function Modal({ setIsOpen, type, params }) {
         modalProperties.handleSubmit = () => {
             console.log("handleSubmit for 'delete-thread' modal")
             setIsOpen(false);
+            params.setShowOptionsButton(false);
+            params.setIsDropdownOpen(false);
             // ADD LOGIC HERE
         }
     }
