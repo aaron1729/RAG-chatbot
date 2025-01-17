@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ChatThread from "./ChatThread";
 import PropTypes from 'prop-types';
 
 // the `chatHistory` props is a list of ChatThread objects (each with keys `id` and `title).
 function ChatHistory({ chatHistory, setChatHistory, renameThread, currentThreadId, setCurrentThreadId, setMessages }) {
 
+    // this computes the && of all individual `isDropdownOpen` booleans.
     const [isAnyDropdownOpen, setIsAnyDropdownOpen] = useState(false)
+
+    useEffect(() => {
+        // for debugging
+        console.log(`isAnyDropdownOpen is now ${isAnyDropdownOpen}`);
+    }, [isAnyDropdownOpen])
 
     // the position of a ChatThreadMenu, should it exist
     const [chatThreadMenuPosition, setChatThreadMenuPosition] = useState({top: null, left: null})

@@ -14,9 +14,9 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
     const buttonRef = useRef(null);
 
     useEffect(() => {
-        // this indeed computes the `&&` of all instances of `isDropdownOpen` because only at most one of them will ever be set to `true`.
-        setIsAnyDropdownOpen(isDropdownOpen)
-        setTimeout(() => console.log(`isAnyDropdownOpen just set to ${isAnyDropdownOpen}`), 500)
+        // this indeed computes the `&&` of all instances of `isDropdownOpen`, because only at most one of them will ever be set to `true`.
+        console.log(`isDropdownOpen at index ${index} is now ${isDropdownOpen}`);
+        setIsAnyDropdownOpen(isDropdownOpen);
     }, [isDropdownOpen, setIsAnyDropdownOpen])
 
     // show the "options" button when either:
@@ -63,6 +63,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
                 >
                     {chatThread.title}
                 </span>
+                {/* this is always rendered, but becomes transparent (opacity 0) when `showOptionsButton` is `false`. */}
                 <MoreVertical
                     size={18}
                     style={{
