@@ -3,7 +3,7 @@ import ChatThread from "./ChatThread";
 import PropTypes from 'prop-types';
 
 // the `chatHistory` props is a list of ChatThread objects (each with keys `id` and `title).
-function ChatHistory({ chatHistory, setChatHistory, renameThread, currentThreadId, setCurrentThreadId, setMessages }) {
+function ChatHistory({ chatHistory, setChatHistory, renameOrRemoveThread, currentThreadId, setCurrentThreadId, setMessages }) {
 
     // this computes the && of all individual `isDropdownOpen` booleans.
     const [isAnyDropdownOpen, setIsAnyDropdownOpen] = useState(false)
@@ -30,7 +30,7 @@ function ChatHistory({ chatHistory, setChatHistory, renameThread, currentThreadI
                             setChatThreadMenuPosition={setChatThreadMenuPosition}
                             isAnyDropdownOpen={isAnyDropdownOpen}
                             setIsAnyDropdownOpen={setIsAnyDropdownOpen}
-                            renameThread={renameThread}
+                            renameOrRemoveThread={renameOrRemoveThread}
                             currentThreadId={currentThreadId}
                             setCurrentThreadId={setCurrentThreadId}
                             setMessages={setMessages}
@@ -45,7 +45,7 @@ function ChatHistory({ chatHistory, setChatHistory, renameThread, currentThreadI
 ChatHistory.propTypes = {
     chatHistory: PropTypes.array,
     setChatHistory: PropTypes.func,
-    renameThread: PropTypes.func,
+    renameOrRemoveThread: PropTypes.func,
     currentThreadId: PropTypes.number,
     setCurrentThreadId: PropTypes.func,
     setMessages: PropTypes.func,

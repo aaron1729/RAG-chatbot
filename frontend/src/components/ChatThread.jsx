@@ -5,7 +5,7 @@ import ChatThreadMenu from './ChatThreadMenu';
 import { getChatThread } from '../services/requests';
 
 // the prop `chatThread` is an object with keys `id` and `title`.
-function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMenuPosition, isAnyDropdownOpen, setIsAnyDropdownOpen, renameThread, currentThreadId, setCurrentThreadId, setMessages }) {
+function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMenuPosition, isAnyDropdownOpen, setIsAnyDropdownOpen, renameOrRemoveThread, currentThreadId, setCurrentThreadId, setMessages }) {
     
     // the state `isDropdownOpen` tracks whether the `ChatThreadMenu` component is rendering. but note that it's hidden when additionally the modal is open.
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -79,7 +79,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
                         buttonRef={buttonRef}
                         setShowOptionsButton={setShowOptionsButton}
                         threadId={chatThread.id}
-                        renameThread={renameThread}
+                        renameOrRemoveThread={renameOrRemoveThread}
                     />
                 )}
             </div>
@@ -94,7 +94,7 @@ ChatThread.propTypes = {
     index: PropTypes.number,
     isAnyDropdownOpen: PropTypes.bool,
     setIsAnyDropdownOpen: PropTypes.func,
-    renameThread: PropTypes.func,
+    renameOrRemoveThread: PropTypes.func,
     currentThreadId: PropTypes.number,
     setCurrentThreadId: PropTypes.func,
     setMessages: PropTypes.func,

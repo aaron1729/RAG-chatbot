@@ -34,6 +34,18 @@ function renameThread(threadId, title) {
     });
 };
 
+function deleteThread(threadId) {
+    return new Promise((resolve, reject) => {
+        db.run(`DELETE FROM threads WHERE id = ?`, [threadId], function(e) {
+            if (e) {
+                return reject(e);
+            }
+            console.log(`thread with id ${threadId} has been deleted`);
+            resolve(true);
+        });
+    });
+};
+
 // since this is an async operation, return a promise, which hopefully resolves to the array of thread titles and ids for the given user id.
 function getThreads(userId) {
     return new Promise((resolve, reject) => {
@@ -84,6 +96,7 @@ function closeDatabase() {
 module.exports = {
     insertThread,
     renameThread,
+    deleteThread,
     getThreads,
     insertMessage,
     getMessages,

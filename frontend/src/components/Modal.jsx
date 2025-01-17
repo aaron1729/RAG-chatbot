@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { sendNewThreadName } from '../services/requests';
+import { sendNewThreadName, deleteChatThread } from '../services/requests';
 
 function Modal({ setIsOpen, type, params }) {
     
@@ -34,10 +34,10 @@ function Modal({ setIsOpen, type, params }) {
         modalProperties.placeholderText = "new thread name";
         modalProperties.submitButtonName = "apply";
         modalProperties.handleSubmit = async () => {
-            console.log("handleSubmit for 'rename-thread' modal")
+            console.log("handleSubmit for 'rename-thread' modal");
             const newThreadName = document.getElementById('modal-input').value;
             await sendNewThreadName(params.threadId, newThreadName);
-            params.renameThread(params.threadId, newThreadName);
+            params.renameOrRemoveThread(params.threadId, newThreadName);
             setIsOpen(false);
             params.setShowOptionsButton(false);
             params.setIsDropdownOpen(false);
@@ -48,12 +48,13 @@ function Modal({ setIsOpen, type, params }) {
         modalProperties.title = "really delete thread?"
         modalProperties.hasTextInput = false;
         modalProperties.submitButtonName = "delete";
-        modalProperties.handleSubmit = () => {
-            console.log("handleSubmit for 'delete-thread' modal")
+        modalProperties.handleSubmit = async () => {
+            console.log("handleSubmit for 'delete-thread' modal");
+            await deleteChatThread(params.threadId);
+            params.renameOrRemoveThread(params.threadId)
             setIsOpen(false);
             params.setShowOptionsButton(false);
             params.setIsDropdownOpen(false);
-            // ADD LOGIC HERE
         }
     }
 

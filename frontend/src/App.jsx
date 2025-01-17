@@ -53,14 +53,19 @@ function App() {
     getChatHistoryHere()
   }, [])
 
-  function renameThread(threadId, title) {
-    const newChatHistory = chatHistory.map(chatThread => {
-      if (chatThread.id === threadId) {
-        return {id: chatThread.id, title: title}
-      } else {
-        return chatThread
-      }})
-    setChatHistory(newChatHistory)
+  function renameOrRemoveThread(threadId, title) {
+    if (title) {
+      const newChatHistory = chatHistory.map(chatThread => {
+        if (chatThread.id === threadId) {
+          return {id: chatThread.id, title: title}
+        } else {
+          return chatThread
+        }})
+      setChatHistory(newChatHistory);
+    } else {
+      const newChatHistory = chatHistory.filter(chatThread => (chatThread.id !== threadId))
+      setChatHistory(newChatHistory);
+    }
   }
 
   async function handleTextSubmit (e) {
@@ -91,7 +96,7 @@ function App() {
     <div className="flex h-screen bg-gray-200">
       <Sidebar
         chatHistory={chatHistory}
-        renameThread={renameThread}
+        renameOrRemoveThread={renameOrRemoveThread}
         currentThreadId={currentThreadId}
         setCurrentThreadId={setCurrentThreadId}
         setMessages={setMessages}

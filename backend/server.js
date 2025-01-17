@@ -8,7 +8,7 @@ const apiKey = process.env.VITE_ANTHROPIC_API_KEY
 const app = express();
 app.use(express.json())
 
-const { insertThread, renameThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database.js");
+const { insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database.js");
 
 // middleware
 app.use(express.json());
@@ -97,10 +97,9 @@ app.post("/api/getChatThread", async (req, res) => {
     }
 })
 
-
 // handle requests to rename a thread.
-app.post("/api/renameThread", async (req, res) => {
-    console.log("inside of the `/renameThread` endpoint handler")
+app.post("/api/renameChatThread", async (req, res) => {
+    console.log("inside of the `/api/renameThread` endpoint handler")
     const { title, threadId } = req.body
     try {
         const updated = await renameThread(threadId, title);
@@ -111,6 +110,23 @@ app.post("/api/renameThread", async (req, res) => {
         }
     } catch (e) {
         console.error("error creating or updating thread: " + e.message)
+        res.status(500).json({error: e.message})
+    }
+})
+
+// handle requests to delete a thread.
+app.post("/api/deleteChatThread", async (req, res) => {
+    console.log("inside of the `/api/deleteChatThread` endpoint handler")
+    const { threadId } = req.body
+    try {
+        const deleted = await deleteThread(threadId);
+        if (deleted) {
+            return res.status(200).json({message: "thread successfully deleted"})
+        } else {
+            return res.status(404).json({error: "thread not found or not successfully deleted"})
+        }
+    } catch (e) {
+        console.error("error deleting thread: " + e.message)
         res.status(500).json({error: e.message})
     }
 })
