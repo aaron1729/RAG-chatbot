@@ -142,6 +142,7 @@ function App() {
         currentThreadId={currentThreadId}
         setCurrentThreadId={setCurrentThreadId}
         setMessages={setMessages}
+        startNewChat={startNewChat}
       />
       <div className="flex flex-col flex-1">
         <MessageWindow messages={messages} />

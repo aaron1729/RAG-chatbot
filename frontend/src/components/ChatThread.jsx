@@ -55,7 +55,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span 
-                    className="ml-2.5 whitespace-nowrap overflow-hidden truncate flex-1 text-left"
+                    className={`ml-2.5 whitespace-nowrap overflow-hidden truncate flex-1 text-left ${chatThread.id !== currentThreadId ? 'cursor-pointer' : ''}`}
                     onClick={() => {}}
                 >
                     {chatThread.title}
@@ -70,6 +70,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
                         padding: '2px',
                         borderRadius: '50%',
                         backgroundColor: currentThreadId === chatThread.id ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)',
+                        cursor: 'pointer',
                     }}
                     ref={buttonRef}
                     onClick={onOptionsButtonClick}
