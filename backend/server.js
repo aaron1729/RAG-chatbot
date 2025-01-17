@@ -1,15 +1,17 @@
 const express = require("express");
 const cors = require("cors");
+const { insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database.js");
+
+
+
+
+// TO BE REMOVED
 
 require("dotenv").config();
 const anthropicApiKey = process.env.VITE_ANTHROPIC_API_KEY
 
-// const OpenAI = require("llama_index.llms.openai");
-// console.log("OpenAI is:", OpenAI)
-
-
-// TO BE REMOVED
 const Anthropic = require("@anthropic-ai/sdk");
+
 
 
 
@@ -19,7 +21,7 @@ const Anthropic = require("@anthropic-ai/sdk");
 const app = express();
 app.use(express.json())
 
-const { insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database.js");
+
 
 // middleware
 app.use(express.json());
@@ -28,10 +30,41 @@ app.use(cors({
 }))
 
 
+
+
+
+// Add this somewhere in your express routes
+app.get('/api/test-python', async (req, res) => {
+    try {
+        const response = await fetch('http://localhost:8000/test', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: "Hello from Node!" })
+        });
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+
+
+
+
+
 // TO BE REMOVED
 const anthropic = new Anthropic({
     apiKey: anthropicApiKey
 })
+
+
+
+
 
 
 
@@ -153,6 +186,31 @@ app.post("/api/deleteChatThread", async (req, res) => {
         res.status(500).json({error: e.message})
     }
 })
+
+////////////////////////////////////////
+
+// proxy route for llama
+app.use("/llama", async (req, res) => {
+    try {
+        const response = await fetch(`http://localhost:8000${req.url}`, {
+            method:req.method,
+            headers: {
+                ...req.headers,
+                "Content-Type": "application/json",
+            },
+            body: ["POST", "PUT", "PATCH"].includes(req.method) ? JSON.stringify(req.body) : undefined
+        });
+        const data = await response.json();
+        res.json(data);
+    } catch (e) {
+        console.error("error proxying to llama server:", e.message);
+        res.status(500).json({error:e.message});
+    }
+})
+
+
+
+
 
 ////////////////////////////////////////
 

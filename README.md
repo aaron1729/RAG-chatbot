@@ -2,6 +2,12 @@ a silly little chatbot for chatting with RAG for previous chat threads.
 
 built using react + vite.
 
+react+vite app on port 5173 (vite's default).
+
+node server on port 3000.
+
+python fastAPI server on port 8000.
+
 ---
 
 **to do (in order)**

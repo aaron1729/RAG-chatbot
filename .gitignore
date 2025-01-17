@@ -12,7 +12,7 @@ lerna-debug.log*
 
 **/node_modules/
 
-backend/RAG_chatbot_python_venv/
+backend/python_venv/
 
 dist
 dist-ssr
