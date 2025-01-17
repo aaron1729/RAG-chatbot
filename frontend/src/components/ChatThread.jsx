@@ -19,12 +19,9 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
         setIsAnyDropdownOpen(isDropdownOpen);
     }, [isDropdownOpen, setIsAnyDropdownOpen])
 
-    // show the "options" button when either:
-        // the user is hovering over this component AND no dropdown is open; OR
-        // this dropdown is open.
     useEffect(() => {
-        setShowOptionsButton(((isHovered && !isAnyDropdownOpen) || isDropdownOpen))
-    }, [isHovered, isDropdownOpen, isAnyDropdownOpen])
+        setShowOptionsButton(isHovered || isDropdownOpen)
+    }, [isHovered, isDropdownOpen])
 
     function onOptionsButtonClick () {
         const rect = buttonRef.current.getBoundingClientRect();

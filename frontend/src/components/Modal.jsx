@@ -7,25 +7,17 @@ function Modal({ setIsOpen, type, params }) {
     console.log("modal component fired")
 
     // close modal if "esc" key is pressed
-    // useEffect(() => {
-    //     const handleKeyDown = (event) => {
-    //         if (event.key === 'Escape') {
-    //             setIsOpen(false);
-    //             if (params.setIsDropdownOpen) {
-    //                 params.setIsDropdownOpen(false);
-    //             }
-    //             if (params.setIsHovered) {
-    //                 params.setIsHovered(false);
-    //             }
-    //         }
-    //     };
+    const handleKeyDown = (event) => {
+        if (event.key === 'Escape') {
+            // these must be in order, because the latter two actually close down components.
+            console.log("'Esc' key pressed when modal open");
+            params.setShowOptionsButton(false);
+            params.setIsDropdownOpen(false);
+            setIsOpen(false);
+        }
+    };
 
-    //     window.addEventListener('keydown', handleKeyDown);
-
-    //     return () => {
-    //         window.removeEventListener('keydown', handleKeyDown);
-    //     };
-    // }, [setIsOpen, params]);
+    window.addEventListener('keydown', handleKeyDown);
 
     // set this, based on the type of the modal. here, just keep track of all the possible properties.
     const modalProperties = {
@@ -47,12 +39,8 @@ function Modal({ setIsOpen, type, params }) {
             await sendNewThreadName(params.threadId, newThreadName);
             params.renameThread(params.threadId, newThreadName);
             setIsOpen(false);
-            if (params.setIsDropdownOpen) {
-                params.setIsDropdownOpen(false);
-            }
-            if (params.setIsHovered) {
-                params.setIsHovered(false);
-            }
+            params.setShowOptionsButton(false);
+            params.setIsDropdownOpen(false);
         }
     }
 

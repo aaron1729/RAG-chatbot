@@ -27,7 +27,6 @@ function MessageBubble({ role, content }) {
 }
 
 MessageBubble.propTypes = {
-    // index: PropTypes.number,
     role: PropTypes.string,
     content: PropTypes.string,
 }

@@ -64,7 +64,6 @@ function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, 
                             console.log("'rename thread' option selected");
                             setModalType("rename-thread");
                             setIsModalOpen(true);
-                            // setIsOpen(false);
                         }}
                         >
                         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -77,7 +76,6 @@ function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, 
                             console.log("'delete thread' option selected");
                             setModalType("delete-thread");
                             setIsModalOpen(true);
-                            // setIsOpen(false);
                         }}
                         >
                         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -94,7 +92,7 @@ function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, 
                         threadId,
                         renameThread,
                         setIsDropdownOpen: setIsOpen,
-                        setIsHovered: () => setShowOptionsButton(false)
+                        setShowOptionsButton: setShowOptionsButton
                     }}
                 />
             )}
