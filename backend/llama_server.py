@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+# this implicitly loads the openai API key from the `backend/.env` file.
 load_dotenv()
 # the second argument is the fallback value
 PORT = int(os.environ.get("PYTHON_SERVER_PORT", 8000))
@@ -26,6 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# this is just for convenience: to test if the server is running, point the browser to `http://localhost:8000` (or `http://0.0.0.0:8000`).
 @app.get("/")
 async def read_root():
     return {"status": "llama server is running!"}
