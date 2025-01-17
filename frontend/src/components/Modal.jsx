@@ -2,29 +2,30 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { sendNewThreadName } from '../services/requests';
 
-function Modal({ isOpen, setIsOpen, type, params }) {
+function Modal({ setIsOpen, type, params }) {
+    
+    console.log("modal component fired")
 
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === 'Escape') {
-                setIsOpen(false);
-                if (params.setIsDropdownOpen) {
-                    params.setIsDropdownOpen(false);
-                }
-                if (params.setIsHovered) {
-                    params.setIsHovered(false);
-                }
-            }
-        };
+    // close modal if "esc" key is pressed
+    // useEffect(() => {
+    //     const handleKeyDown = (event) => {
+    //         if (event.key === 'Escape') {
+    //             setIsOpen(false);
+    //             if (params.setIsDropdownOpen) {
+    //                 params.setIsDropdownOpen(false);
+    //             }
+    //             if (params.setIsHovered) {
+    //                 params.setIsHovered(false);
+    //             }
+    //         }
+    //     };
 
-        window.addEventListener('keydown', handleKeyDown);
+    //     window.addEventListener('keydown', handleKeyDown);
 
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [setIsOpen, params]);
-
-    if (!isOpen) return null;
+    //     return () => {
+    //         window.removeEventListener('keydown', handleKeyDown);
+    //     };
+    // }, [setIsOpen, params]);
 
     // set this, based on the type of the modal. here, just keep track of all the possible properties.
     const modalProperties = {
@@ -41,6 +42,7 @@ function Modal({ isOpen, setIsOpen, type, params }) {
         modalProperties.placeholderText = "new thread name";
         modalProperties.submitButtonName = "apply";
         modalProperties.handleSubmit = async () => {
+            console.log("handleSubmit for 'rename-thread' modal")
             const newThreadName = document.getElementById('modal-input').value;
             await sendNewThreadName(params.threadId, newThreadName);
             params.renameThread(params.threadId, newThreadName);
@@ -58,17 +60,22 @@ function Modal({ isOpen, setIsOpen, type, params }) {
         modalProperties.title = "really delete thread?"
         modalProperties.hasTextInput = false;
         modalProperties.submitButtonName = "delete";
-        modalProperties.handleSubmit = () => {console.log("handleSubmit for delete-thread modal")}
+        modalProperties.handleSubmit = () => {
+            console.log("handleSubmit for 'delete-thread' modal")
+            setIsOpen(false);
+            // ADD LOGIC HERE
+        }
     }
 
     return (
-        <div className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center ${isOpen ? '' : 'hidden'} z-50`}>
+        <div className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50`}>
             <div className="bg-white p-6 rounded-lg shadow-lg">
                 <h2
                     className="text-lg font-semibold"
                 >
                     {modalProperties.title}
                 </h2>
+                {/* only include an input box if this boolean is `true` */}
                 {modalProperties.hasTextInput && <input
                     id="modal-input"
                     type="text"
@@ -77,12 +84,14 @@ function Modal({ isOpen, setIsOpen, type, params }) {
                     autoFocus
                 />}
             <div className="mt-4 flex justify-end space-x-4">
+                {/* CANCEL button */}
                 <button
                     onClick={() => setIsOpen(false)}
                     className="px-4 py-2 bg-gray-200 rounded text-gray-600"
                 >
                     cancel
                 </button>
+                {/* SUBMIT button */}
                 <button
                     onClick={modalProperties.handleSubmit}
                     className="px-4 py-2 bg-blue-500 rounded text-white"
@@ -96,7 +105,6 @@ function Modal({ isOpen, setIsOpen, type, params }) {
 }
 
 Modal.propTypes = {
-    isOpen: PropTypes.bool,
     setIsOpen: PropTypes.func,
     type: PropTypes.string,
     params: PropTypes.object,

@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import { Pencil, Trash2 } from 'lucide-react';
 import Modal from './Modal.jsx';
 
-// options: rename, delete, RAG (or re-RAG)
-function ChatThreadMenu({ isOpen, setIsOpen, position, buttonRef, setShowOptionsButton, threadId, renameThread }) {
+function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, threadId, renameThread }) {
+
+    console.log(`ChatThreadMenu component fired, with threadId ${threadId}`)
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalType, setModalType] = useState(null);
@@ -13,30 +14,32 @@ function ChatThreadMenu({ isOpen, setIsOpen, position, buttonRef, setShowOptions
     // useRef and useEffect must be _always_ called -- not just conditionally. so this stuff must come before the `return null` conditional.
     const menuRef = useRef(null);
     useEffect(() => {
-        // technically, this is just handling clicks that are:
-            // outside of the current menu;
-            // also not on the button that opened this menu.
-        // (clicks on that are handled by the outer `onClick` function.)
+        // handle clicks outside menu and button to close the menu, but keep open if modal is showing
         const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target) && !buttonRef.current.contains(event.target)) {
+            if (menuRef.current && 
+                !menuRef.current.contains(event.target) && 
+                !buttonRef.current.contains(event.target) && 
+                !isModalOpen) {
                 setIsOpen(false)
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
-            document.removeEventListener("mousdown", handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         }
-    }, [setIsOpen, buttonRef])
+    }, [setIsOpen, buttonRef, isModalOpen])
     
-    // if the modal is opened and then closes, turn off the options button.
     useEffect(() => {
+    }, [isModalOpen]);
+    
+    useEffect(() => {
+        // for debugging
+        console.log("isModalOpen:", isModalOpen);
+        // 
         if (!isModalOpen) {
             setShowOptionsButton(false);
-            setIsOpen(false);
         }
     }, [isModalOpen]);
-
-    if (!isOpen) return null;
 
     // calculate the available space below the button. this might get screwed up on a teeny tiny screen, but oh well.
     const availableSpaceBelow = window.innerHeight - position.top;
@@ -51,7 +54,8 @@ function ChatThreadMenu({ isOpen, setIsOpen, position, buttonRef, setShowOptions
         <>
             <div
                 ref={menuRef}
-                className="absolute bg-white border border-gray-300 shadow-lg p-2 rounded top-0"
+                // this only gets rendered if `isDropdownOpen` in the above component is `true`. but this should then get _hidden_ if the modal is open.
+                className={`absolute bg-white border border-gray-300 shadow-lg p-2 rounded top-0 ${isModalOpen ? 'hidden' : ''}`}
                 style={{
                     top: adjustedTop,
                     left: position.left,
@@ -64,9 +68,10 @@ function ChatThreadMenu({ isOpen, setIsOpen, position, buttonRef, setShowOptions
                     <li
                         className="p-2 hover:bg-gray-100 cursor-pointer"
                         onClick={() => {
-                            console.log("onClick fired for 'rename thread'");
+                            console.log("'rename thread' option selected");
                             setModalType("rename-thread");
                             setIsModalOpen(true);
+                            setIsOpen(false);
                         }}
                         >
                         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -76,9 +81,10 @@ function ChatThreadMenu({ isOpen, setIsOpen, position, buttonRef, setShowOptions
                     <li
                         className="p-2 hover:bg-gray-100 cursor-pointer"
                         onClick={() => {
-                            console.log("onClick fired for 'delete thread'");
+                            console.log("'delete thread' option selected");
                             setModalType("delete-thread");
                             setIsModalOpen(true);
+                            setIsOpen(false);
                         }}
                         >
                         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -87,24 +93,24 @@ function ChatThreadMenu({ isOpen, setIsOpen, position, buttonRef, setShowOptions
                     </li>
                 </ul>
             </div>
-            <Modal
-                isOpen={isModalOpen}
-                setIsOpen={setIsModalOpen}
-                type={modalType}
-                params={{
-                    threadId,
-                    renameThread,
-                    setIsDropdownOpen: setIsOpen,
-                    setIsHovered: () => setShowOptionsButton(false)
-                }}
-            />
+            {isModalOpen &&
+                <Modal
+                    setIsOpen={setIsModalOpen}
+                    type={modalType}
+                    params={{
+                        threadId,
+                        renameThread,
+                        setIsDropdownOpen: setIsOpen,
+                        setIsHovered: () => setShowOptionsButton(false)
+                    }}
+                />
+            }
         </>,
         document.body
     )
 }
 
 ChatThreadMenu.propTypes = {
-    isOpen: PropTypes.bool,
     setIsOpen: PropTypes.func,
     onClose: PropTypes.func,
     position: PropTypes.object,

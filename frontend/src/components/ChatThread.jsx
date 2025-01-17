@@ -4,9 +4,10 @@ import { MoreVertical } from 'lucide-react';
 import ChatThreadMenu from './ChatThreadMenu';
 import { getChatThread } from '../services/requests';
 
-// the props `chatThread` is an object with keys `id` and `title`.
+// the prop `chatThread` is an object with keys `id` and `title`.
 function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMenuPosition, isAnyDropdownOpen, setIsAnyDropdownOpen, renameThread, currentThreadId, setCurrentThreadId, setMessages }) {
     
+    // the state `isDropdownOpen` tracks whether the `ChatThreadMenu` component is rendering. but note that it's hidden when additionally the modal is open.
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const [showOptionsButton, setShowOptionsButton] = useState(false);
@@ -15,23 +16,22 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
     useEffect(() => {
         // this indeed computes the `&&` of all instances of `isDropdownOpen` because only at most one of them will ever be set to `true`.
         setIsAnyDropdownOpen(isDropdownOpen)
+        setTimeout(() => console.log(`isAnyDropdownOpen just set to ${isAnyDropdownOpen}`), 500)
     }, [isDropdownOpen, setIsAnyDropdownOpen])
 
-    // decide when to show the "options" button.
+    // show the "options" button when either:
+        // the user is hovering over this component AND no dropdown is open; OR
+        // this dropdown is open.
     useEffect(() => {
         setShowOptionsButton(((isHovered && !isAnyDropdownOpen) || isDropdownOpen))
     }, [isHovered, isDropdownOpen, isAnyDropdownOpen])
 
     function onOptionsButtonClick () {
-        console.log("onOptionsButtonClick fired in ChatThread.jsx at index", index)
-        const rect = buttonRef.current.getBoundingClientRect(); // this seems to record where the click occurred
+        const rect = buttonRef.current.getBoundingClientRect();
         setChatThreadMenuPosition({
-            // not sure if these window scroll values are supposed to be included or not...
-            top: rect.bottom, // + window.scrollY,
-            left: rect.left // + window.scrollX
+            top: rect.bottom,
+            left: rect.left
         });
-        console.log("and now, chatThreadMenuPosition is:", chatThreadMenuPosition)
-        
         setIsDropdownOpen(!isDropdownOpen)
     }
 
@@ -76,15 +76,16 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
                     ref={buttonRef}
                     onClick={onOptionsButtonClick}
                 />
-                <ChatThreadMenu
-                    isOpen={isDropdownOpen}
-                    setIsOpen={setIsDropdownOpen}
-                    position={chatThreadMenuPosition}
-                    buttonRef={buttonRef}
-                    setShowOptionsButton={setShowOptionsButton}
-                    threadId={chatThread.id}
-                    renameThread={renameThread}
-                />
+                {isDropdownOpen && (
+                    <ChatThreadMenu
+                        setIsOpen={setIsDropdownOpen}
+                        position={chatThreadMenuPosition}
+                        buttonRef={buttonRef}
+                        setShowOptionsButton={setShowOptionsButton}
+                        threadId={chatThread.id}
+                        renameThread={renameThread}
+                    />
+                )}
             </div>
         </div>
     )
