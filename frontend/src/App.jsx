@@ -18,6 +18,13 @@ function App() {
   
   // whether we're currently getting a chat response
   const [isLoading, setIsLoading] = useState(false);
+
+  // once we're no longer loading a response, focus back on the `'text-input'` element.
+  useEffect(() => {
+    if (!isLoading) {
+      document.getElementById('text-input').focus();
+    }
+  }, [isLoading])
   
   // current thread id
   // this begins as `null`. it always gets sent to the server with the messages, and if it's null then the server responds with a new value for it, which we then set.
@@ -76,10 +83,7 @@ function App() {
     } catch (error) {
       console.log("error:", error)
     } finally {
-      setIsLoading(false)
-      setTimeout(() => {
-        document.getElementById('text-input').focus(); // focus after state update
-      }, 0);
+      setIsLoading(false);
     }
   }
 
