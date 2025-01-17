@@ -7,11 +7,14 @@ built using react + vite.
 **to do (in order)**
 
 - [x] turn ChatHistory into Sidebar, with header and a chathistory components.
-- [x] save chats to a database.
+- [x] save chats (and user ids) to a database
 - [x] display chat history.
 - [x] in a new chat, once the current chat is created, highlight it. but also, highlight other older chats when we jump back to those.
-- [ ] add a "new chat" button to the header.
+- [x] add a "new chat" button to the header.
 - [x] allow user to change the title of the thread using the `updateThread` function.
+
+- [ ] allow RAG and re-RAG of threads
+
 - [ ] bound the length of a new thread title. (maybe allow a longer description, separately?)
 - [ ] keep track of the input in other previous threads, so that when the user returns to it it's still there.
 - [ ] allow uploading docs, maybe with a pop-up modal.

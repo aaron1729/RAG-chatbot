@@ -18,6 +18,16 @@ function ChatHistory({ chatHistory, setChatHistory, renameOrRemoveThread, curren
 
     const margin = "5px"
 
+    if (!chatHistory.length) {
+        return(
+            <div
+                className="text-gray-300"
+            >
+                no chat history yet...
+            </div>
+        )
+    }
+
     return (
         <div style={{ marginTop: margin }}>
             {chatHistory.map((chatThread, index) => {
