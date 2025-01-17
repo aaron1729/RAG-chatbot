@@ -56,7 +56,7 @@ function App() {
     setChatHistory(newChatHistory)
   }
 
-  const handleSubmit = async (e) => {
+  async function handleTextSubmit (e) {
     e.preventDefault() // to stop the browser from reloading the whole page
     if (!input.trim()) return
     const newMessages = [...messages, {role: "user", content: input}]
@@ -68,7 +68,7 @@ function App() {
       if (!currentThreadId) {
         console.log(`changing currentThreadId from ${currentThreadId} to ${data.threadId}`)
         setCurrentThreadId(data.threadId)
-        const newChatHistory = [{id: data.threadId, title: "[new thread]"}, ...chatHistory]
+        const newChatHistory = [{id: data.threadId, title: "new thread (rename me!)"}, ...chatHistory]
         setChatHistory(newChatHistory)
       }
       const responseText = data.content
@@ -97,7 +97,7 @@ function App() {
         <TextInput
           input={input}
           setInput={setInput}
-          handleSubmit={handleSubmit}
+          handleSubmit={handleTextSubmit}
           isLoading={isLoading}
         />
       </div>
@@ -107,31 +107,3 @@ function App() {
 }
 
 export default App
-
-
-
-
-
-
-/*
-COMMENTS & REMINDERS
-
-
-the `handleSubmit` function is an event handler; it'll be the `onSubmit` property for the form.
-so as an argument it will take in the event, namely form submission.
-it's nice to have the text input as a form submission, for a few reasons: the enter key automatically submits, and mobile keyboards' "go" buttons do too.
-
-the messages.map(...) call returns an array of `MessageBubble` instances. react requires for there to be a `key` property (when rendering an array of elements/components), which is _not_ passed as props like other properties. that's why there's also an `index` property.
-
-for the chat box:
-  w-full = width is 100% of the parent container
-  p-2 = adds padding on all sides // 2 means 0.5rex (so 8px by default)
-  border = adds a solid border with default border color
-  rounded-lg = makes a border radius with rounded corners; "lg" means medium-large radius
-  focus -- applied when element receives focus (e.g. clicking into it)
-  focus:outline-none // removes the default browser outline
-  focus:ring-2 // adds a focus ring of width 2px
-  focus:ring-blue-500 // colors the focus ring a medium blue
-
-
-*/

@@ -15,10 +15,10 @@ function MessageBubble({ role, content }) {
     const displayContent = extendedLines.join("\n")
     return (
         <div className={`flex ${role === "user" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-[80%] p-4 rounded-lg ${
+            <div className={`relative max-w-[80%] p-4 rounded-2xl ${
                 role === "user"
-                    ? "bg-blue-500 text-gray-200 text-left"
-                    : "bg-gray-100 text-gray-900 text-left"
+                    ? "bg-blue-500 text-gray-200 rounded-br-none after:absolute after:bottom-0 after:right-[-8px] after:border-[4px] after:border-solid after:border-transparent after:border-l-blue-500 after:border-b-blue-500"
+                    : "bg-gray-100 text-gray-900 rounded-bl-none after:absolute after:bottom-0 after:left-[-8px] after:border-[4px] after:border-solid after:border-transparent after:border-r-gray-100 after:border-b-gray-100"
             }`}>
                 <ReactMarkdown>{displayContent}</ReactMarkdown>
             </div>
