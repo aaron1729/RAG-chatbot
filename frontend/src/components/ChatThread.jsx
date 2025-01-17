@@ -52,17 +52,26 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
             onClick={onThreadClick}
             className={`
                 ${currentThreadId === chatThread.id ? 'bg-blue-400 text-white hover:bg-blue-500' : 'bg-white hover:bg-gray-100'}
-                py-0.5 px-2 mx-2 rounded-lg
+                py-0.5 px-0.5 mx-2 rounded-lg
                 transition-colors duration-50
             `}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ marginLeft: '10px' }} onClick={() => {}}>{chatThread.title}</span>
+                <span 
+                    className="ml-2.5 whitespace-nowrap overflow-hidden truncate flex-1 text-left"
+                    onClick={() => {}}
+                >
+                    {chatThread.title}
+                </span>
                 <MoreVertical
+                    size={18}
                     style={{
                         marginRight: '5px',
-                        opacity: showOptionsButton ? 1 : 0, // control visibility using opacity
-                        transition: 'opacity 0.1s' // smooth transition for visibility
+                        opacity: showOptionsButton ? 1 : 0,
+                        transition: 'opacity 0.1s',
+                        padding: '2px',
+                        borderRadius: '50%',
+                        backgroundColor: currentThreadId === chatThread.id ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)',
                     }}
                     ref={buttonRef}
                     onClick={onOptionsButtonClick}
