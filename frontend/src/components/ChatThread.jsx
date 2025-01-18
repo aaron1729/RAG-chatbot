@@ -50,7 +50,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
             return (
                 <PackagePlus
                     {...props}
-                    className={currentThreadId === chatThread.id ? "text-white" : "text-blue-600"}
+                    className={currentThreadId === chatThread.id ? "text-blue-200" : "text-blue-600"}
                 />
             )
         }
@@ -58,7 +58,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
             return (
                 <PackageCheck
                     {...props}
-                    className={currentThreadId === chatThread.id ? "text-green-200" : "text-green-700"}
+                    className={currentThreadId === chatThread.id ? "text-green-400" : "text-green-700"}
                 />
             );
         }
@@ -66,7 +66,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
             return (
                 <PackageOpen
                     {...props}
-                    className={currentThreadId === chatThread.id ? "text-amber-200" : "text-amber-600"}
+                    className={currentThreadId === chatThread.id ? "text-amber-400" : "text-amber-600"}
                 />
             );
         }
