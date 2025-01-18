@@ -3,7 +3,7 @@ import ChatHistory from "./ChatHistory";
 import PropTypes from 'prop-types';
 
 // the props `chatHistory` is a list of `chatThread` objects (each with keys `id` and `title` and and `ragStatus`).
-function Sidebar({ chatHistory, renameOrRemoveThread, currentThreadId, setCurrentThreadId, setMessages, startNewChat, hasRagIndex }) {
+function Sidebar({ chatHistory, renameOrRemoveThread, currentThreadId, setCurrentThreadId, setMessages, startNewChat, hasRagIndex, handleIndexChatsSubmit }) {
     return (
         <div
             className="flex flex-col h-full w-1/4 bg-white border-r overflow-y-auto"
@@ -12,6 +12,7 @@ function Sidebar({ chatHistory, renameOrRemoveThread, currentThreadId, setCurren
                 startNewChat={startNewChat}
                 currentThreadId={currentThreadId}
                 hasRagIndex={hasRagIndex}
+                handleIndexChatsSubmit={handleIndexChatsSubmit}
             />
             <ChatHistory
                 chatHistory={chatHistory}
@@ -32,6 +33,7 @@ Sidebar.propTypes = {
     setMessages: PropTypes.func,
     startNewChat: PropTypes.func,
     hasRagIndex: PropTypes.bool,
+    handleIndexChatsSubmit: PropTypes.func,
 }
 
 export default Sidebar

@@ -1,4 +1,9 @@
 import os
+
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
+
 from dotenv import load_dotenv
 # this implicitly loads the openai API key from the `backend/.env` file.
 load_dotenv()
@@ -6,13 +11,20 @@ load_dotenv()
 PORT = int(os.environ.get("PYTHON_SERVER_PORT", 8000))
 SYSTEM_PROMPT = os.environ.get("SYSTEM_PROMPT")
 
+
+
 # for the fastapi/uvicorn server
 from fastapi import FastAPI, Body, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 
-# from database.operations import get_threads, get_messages
+
+
+# from database.operations import get_all_messages, get_messages # ACTUALLY NO, these might _only_ get imported by `indices/operations.py`.
+from indices.operations import index_chats
+
+
 
 
 # llama index
@@ -32,13 +44,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+
+
 # this is just for convenience: to test if the server is running, point the browser to `http://localhost:8000` (or `http://0.0.0.0:8000`).
 @app.get("/")
 async def read_root():
     return {"status": "llama server is running!"}
 
 @app.post("/chat")
-async def chat(messages: list = Body(...)):
+async def chat_llama_server(messages: list = Body(...)):
     print("received a post request to the `/chat` endpoint")
     
     system_message = ChatMessage(role="system", content=SYSTEM_PROMPT)
@@ -47,17 +62,30 @@ async def chat(messages: list = Body(...)):
     formatted_messages = [system_message] + [ChatMessage(role=message["role"], content=message.get("content", "")) for message in messages]
 
     try:
-        # print("at the beginning of the `try` block")
         response = llm.chat(formatted_messages).message.blocks[0].text
-        # print("after making `response` in the `try` block")
-        # print("response is:", response)
-        # print("type(response) is:", type(response))
-        # print("finally:", response.message.blocks[0])
         print("response:", response)
         return {"response": response}
     except Exception as e:
         print("in the `except` block")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# this endpoint shouldn't just be called `/index`, since that could clash with other default behavior (like getting `index.html`).
+@app.post("/index_chats")
+async def index_chats_llama_server(user_id: int = Body(...)):
+    print("received a post request to the `/index_chats` endpoint")
+    try:
+        index_chats(user_id)
+        print(f"indexed chats for user {user_id}")
+        return True
+    except Exception as e:
+        print("in the `except` block")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
+
 
 ##################################################
 
@@ -68,11 +96,11 @@ uvicorn.run(app, host="0.0.0.0", port=PORT)
 
 # USE THIS FOR TESTING
 
-async def test_func(my_string):
-    print("test func fired, with argument:", my_string)
-    return
+# async def test_func(my_string):
+#     print("test func fired, with argument:", my_string)
+#     return
 
 
-if __name__ == "__main__":
-    import asyncio
-    asyncio.run(test_func("sup sup sup!"))
+# if __name__ == "__main__":
+#     import asyncio
+#     asyncio.run(test_func("sup sup sup!"))

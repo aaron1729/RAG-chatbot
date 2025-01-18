@@ -12,6 +12,22 @@ const db = new sqlite3.Database(path.join(__dirname, "chats.db"), (e) => {
 
 /////// THESE ASYUNC FUNCTIONS RETURN PROMISES, which (hopefully!) resolve the indicated values/types.
 
+
+// resolves to a boolean
+function updateUserInfo(userId, params) {
+    // AI-GENERATED: updating user info in the users table
+    return new Promise((resolve, reject) => {
+        db.run(`UPDATE users SET ${Object.keys(params).map(key => `${key} = ?`).join(", ")} WHERE id = ?`, [...Object.values(params), userId], (e) => {
+            if (e) {
+                console.error("error updating user info: " + e.message);
+                return reject(e);
+            }
+            console.log(`updated user info for user with id ${userId}`);
+            resolve(true);
+        });
+    });
+}
+
 // resolves to an object
 function getUserInfo(userId) {
     console.log("inside of getUserInfo function on the server side")
@@ -115,6 +131,7 @@ function closeDatabase() {
 }
 
 module.exports = {
+    updateUserInfo,
     getUserInfo,
     insertThread,
     renameThread,

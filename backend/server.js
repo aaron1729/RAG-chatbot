@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000
 const TEMP_USER_ID = 4
 
 // database functions
-const { getUserInfo, insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database/operations.js");
+const { updateUserInfo, getUserInfo, indexChats, insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database/operations.js");
 
 // for server
 const express = require("express");
@@ -113,6 +113,37 @@ app.post("/api/getUserInfo", async (req, res) => {
         res.status(500).json({error: e.message});
     }
 })
+
+// handle requests to index a user's chats.
+app.post("/api/indexChats", async (req, res) => {
+    console.log("inside of the `/api/indexChats` endpoint handler")
+    const { userId } = req.body
+    try {
+        const response = await fetch(`http://localhost:${PYTHON_SERVER_PORT}/index_chats`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            // this needs to be JSON-stringified to be in the correct format. (of course, it's just the int turned into a string.)
+            body: JSON.stringify(userId)
+        })
+        const success = await response.json();
+        // this should just be a boolean.
+        console.log(`success: ${JSON.stringify(success)}`)
+        if (success) {
+            updateUserInfo(userId, {"has_rag_index": true})
+        }
+        res.status(200);
+    } catch (e) {
+        console.error(`error indexing chats: ${e}`);
+        res.status(500).json({error: e.message});
+    }
+})
+
+
+
+
+
+
+
 
 
 // handle requests to get a user's chat history.

@@ -4,7 +4,7 @@ import './App.css';
 import Sidebar from './components/Sidebar.jsx';
 import MessageWindow from './components/MessageWindow.jsx';
 import TextInput from './components/TextInput.jsx';
-import { sendMessage, getChatHistory, getUserInfo } from './services/requests.js';
+import { sendMessage, getChatHistory, getUserInfo, indexChats } from './services/requests.js';
 
 
 
@@ -143,7 +143,7 @@ function App() {
   }
 
   async function handleTextSubmit (e) {
-    e.preventDefault() // to stop the browser from reloading the whole page
+    e.preventDefault(); // to stop the browser from reloading the whole page
     if (!input.trim()) return
     const newMessages = [...messages, {role: "user", content: input}]
     setMessages(newMessages)
@@ -166,6 +166,19 @@ function App() {
     }
   }
 
+  async function handleIndexChatsSubmit (e) {
+    e.preventDefault(); // to stop the browser from reloading the whole page
+    try {
+      const data = await indexChats(TEMP_USER_ID);
+      console.log(`data is: ${data}`)
+
+
+
+    } catch (error) {
+      console.log("error:", error)
+    }
+  }
+
   return (
     <div className="flex h-screen bg-gray-200">
       <Sidebar
@@ -176,6 +189,7 @@ function App() {
         setMessages={setMessages}
         startNewChat={startNewChat}
         hasRagIndex={hasRagIndex}
+        handleIndexChatsSubmit={handleIndexChatsSubmit}
       />
       <div className="flex flex-col flex-1">
         <MessageWindow messages={messages} />

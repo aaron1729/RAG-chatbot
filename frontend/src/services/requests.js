@@ -12,13 +12,31 @@ export async function getUserInfo(userId) {
             throw new Error("response not ok in getUserInfo")
         }
         const data = await response.json();
-        return data
+        return data;
     } catch (error) {
         console.error("error getting user info:", error);
         throw error;
     }
 }
 
+export async function indexChats(userId) {
+    try {
+        console.log("inside of the async function indexChats (on the frontend)")
+        const response = await fetch("/api/indexChats", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({userId})
+        });
+        if (!response.ok) {
+            throw new Error("response not ok in indexChats")
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("error indexing chats:", error);
+        throw error;
+    }
+}
 
 export async function getChatHistory(userId) {
     try {
@@ -32,7 +50,7 @@ export async function getChatHistory(userId) {
             throw new Error("response not ok in getChatHistory")
         }
         const data = await response.json();
-        return data
+        return data;
     } catch (error) {
         console.error("error getting chat history:", error);
         throw error;

@@ -10,14 +10,56 @@ from llama_index.core import Document, VectorStoreIndex, StorageContext, load_in
 
 from datetime import datetime
 
-from backend.database.operations import get_threads, get_messages, get_thread_info
+from backend.database.operations import get_threads, get_messages, get_thread_info, get_all_messages, get_all_threads
+
+def index_chats(user_id):
+    messages = get_all_messages(user_id)
+    threads = get_all_threads(user_id)
+    if not threads:
+        return
+    # this is a dict: keys are thread ids, values are dicts with keys "title" and "messages".
+    threads_dict = {thread["id"]: {"title": thread["title"], "thread_timestamp": thread["timestamp"], "messages": []} for thread in threads}
+    # this is faster than filtering above, iterating through the whole `messages` list just once.
+    for message in messages:
+        threads_dict[message["thread_id"]]["messages"].append(message)
+    document_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    def thread_dict_to_document(thread_id, thread_dict):
+        def message_to_string(message):
+            return f"{message["role"]} ({message["timestamp"]}:\n{message["content"]})"
+        text = f"title:\n{thread_dict["title"]}\n\n" + "\n\n".join([message_to_string(message) for message in thread_dict["messages"]])
+        return Document(
+            text=text,
+            id_=str(thread_id),
+            extra_info={
+                # this is valuable, since LLMs can't count!
+                "message_count": len(thread_dict["messages"]),
+                "title": thread_dict["title"],
+                "user_id": user_id,
+                "thread_timestamp": thread_dict["thread_timestamp"],
+                "document_timestamp": document_timestamp,
+                "last_message_timestamp": thread_dict["messages"][-1]["timestamp"]
+            },
+        )
+    documents = [thread_dict_to_document(thread_id, thread_dict) for thread_id, thread_dict in threads_dict.items()]
+    index = VectorStoreIndex.from_documents(documents)
+    print(f"made an index where {user_id = }")
+    index.storage_context.persist(persist_dir=str(Path(__file__).parent / str(user_id)))
+    return index
+
+
+
+######################################################
+
+# stuff below here may not be needed...
+
+
 
 def thread_to_document(thread_id):
     messages = get_messages(thread_id)
     thread_info = get_thread_info(thread_id)    
     def message_to_string(message):
         return f"{message["role"]} ({message["timestamp"]}:\n{message["content"]})"
-    text = "\n\n".join([message_to_string(message) for message in messages])
+    text = f"title:\n{thread_info["title"]}\n\n" + "\n\n".join([message_to_string(message) for message in messages])
     document_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     last_message_timestamp = messages[-1]["timestamp"]
     return Document(
@@ -26,6 +68,7 @@ def thread_to_document(thread_id):
         id_=str(thread_id),
         extra_info={
             # "thread_id": thread_id, # this is no longer needed, since it's recorded above (as `id_`, and for some reason therefor also as `doc_id`).
+            # the `message_count` is valuable, since LLMs don't know how to count!
             "message_count": len(messages),
             "title": thread_info["title"],
             "user_id": thread_info["user_id"],
@@ -34,6 +77,8 @@ def thread_to_document(thread_id):
             "last_message_timestamp": last_message_timestamp,
         }
     )
+
+
 
 
 ### TO TEST:
@@ -89,8 +134,8 @@ def refresh_thread_index(user_id):
 
 
 
-### TO TEST:
-import time
-start_time = time.time()
-refresh_thread_index(4)
-print("time taken:", time.time() - start_time)
+# ### TO TEST:
+# import time
+# start_time = time.time()
+# refresh_thread_index(4)
+# print("time taken:", time.time() - start_time)
