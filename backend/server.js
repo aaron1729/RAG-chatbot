@@ -87,7 +87,7 @@ app.post("/api/chat", async (req, res) => {
             content: responseText
         });
     } catch (e) {
-        console.error(`error calling anthropic api: ${e}`);
+        console.error(`error calling chat api: ${e}`);
         res.status(500).json({error: e.message})
     }
 })

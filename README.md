@@ -30,7 +30,8 @@ of course, install the various packages and dependencies. and run `backend/datab
 - [x] allow user to change the title of the thread using the `updateThread` function.
 - [x] reroute chat functionality through llama server.
 - [ ] allow RAG and re-RAG of threads.
-- [ ] allow to reference previous threads via RAG in a current thread.
+- [ ] make a RAG chat engine that references previous threads when responding.
+- [ ] enable streaming of responses.
 - [ ] host on a server!
 
 ---

@@ -1,6 +1,8 @@
 const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
-const db = new sqlite3.Database('chats.db', (e) => {
+// this filepath is based on node's working directory (meaning `backend/`) -- it's not relative to the current file.
+const db = new sqlite3.Database(path.join(__dirname, "chats.db"), (e) => {
     if (e) {
         console.error("error opening database: " + e.message);
     } else {

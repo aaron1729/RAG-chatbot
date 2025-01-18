@@ -10,10 +10,15 @@ from fastapi import FastAPI, Body, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
+# for the database
+import sqlite3
+db_connection = sqlite3.connect("")
+
 # llama index
 from llama_index.llms.openai import OpenAI
 from llama_index.core.base.llms.types import ChatMessage
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+from llama_index.core import Document
 
 llm = OpenAI(temperature=1, model="gpt-3.5-turbo", max_tokens=256)
 
@@ -57,4 +62,20 @@ async def chat(messages: list = Body(...)):
         print("in the `except` block")
         raise HTTPException(status_code=500, detail=str(e))
 
+##################################################
+
+# COMMENT THIS OUT FOR TESTING
 uvicorn.run(app, host="0.0.0.0", port=PORT)
+
+##################################################
+
+# USE THIS FOR TESTING
+
+async def test_func(my_string):
+    print("test func fired, with argument:", my_string)
+    return
+
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(test_func("sup sup sup!"))
