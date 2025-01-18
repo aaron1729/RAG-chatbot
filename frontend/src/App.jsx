@@ -154,7 +154,7 @@ function App() {
       if (!currentThreadId) {
         console.log(`changing currentThreadId from ${currentThreadId} to ${data.threadId}`)
         setCurrentThreadId(data.threadId)
-        const newChatHistory = [{id: data.threadId, title: "new thread (rename me!)"}, ...chatHistory]
+        const newChatHistory = [{id: data.threadId, title: "new thread (rename me!)", ragStatus: "NEVER_INDEXED"}, ...chatHistory]
         setChatHistory(newChatHistory)
       }
       const responseText = data.content

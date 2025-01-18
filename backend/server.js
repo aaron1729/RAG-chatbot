@@ -138,14 +138,6 @@ app.post("/api/indexChats", async (req, res) => {
     }
 })
 
-
-
-
-
-
-
-
-
 // handle requests to get a user's chat history.
 app.post("/api/getChatHistory", async (req, res) => {
     console.log("inside of the `/api/getChatHistory` endpoint handler")
