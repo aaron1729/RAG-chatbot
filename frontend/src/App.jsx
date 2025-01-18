@@ -156,6 +156,15 @@ function App() {
         setCurrentThreadId(data.threadId)
         const newChatHistory = [{id: data.threadId, title: "new thread (rename me!)", ragStatus: "NEVER_INDEXED"}, ...chatHistory]
         setChatHistory(newChatHistory)
+      } else {
+      const newChatHistory = chatHistory.map(chatThread => {
+        if (chatThread.id === currentThreadId) {
+          return {...chatThread, ragStatus: "NEEDS_UPDATE"};
+        } else {
+          return chatThread;
+        }
+      });
+      setChatHistory(newChatHistory);
       }
       const responseText = data.content
       setMessages([...newMessages, {role: "assistant", content: responseText}])

@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000
 const TEMP_USER_ID = 4
 
 // database functions
-const { updateUserInfo, getUserInfo, indexChats, insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database/operations.js");
+const { updateUserInfo, getUserInfo, indexChats, insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase, updateThreadRagStatus } = require("./database/operations.js");
 
 // for server
 const express = require("express");
@@ -48,6 +48,8 @@ app.post("/api/chat", async (req, res) => {
             threadId = await insertThread(TEMP_USER_ID, `new thread at ${timestamp}`)
             console.log(`inside of \`/api/chat\` endpoint handler: just made a new thread, with threadId ${threadId}`)
             insertMessage(threadId, "assistant", messages[0].content)
+        } else {
+            updateThreadRagStatus(threadId, "NEEDS_UPDATE")
         }
         
         // save the user message to the database.

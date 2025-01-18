@@ -70,6 +70,19 @@ function renameThread(threadId, title) {
 };
 
 // resolves to a boolean
+function updateThreadRagStatus(threadId, ragStatus) {
+    return new Promise((resolve, reject) => {
+        db.run(`UPDATE threads SET rag_status = ? WHERE id = ?`, [ragStatus, threadId], function(e) {
+            if (e) {
+                return reject(e);
+            }
+            console.log(`thread with id ${threadId} has been updated to rag status "${ragStatus}"`);
+            resolve(true);
+        });
+    });
+}
+
+// resolves to a boolean
 function deleteThread(threadId) {
     return new Promise((resolve, reject) => {
         db.run(`DELETE FROM threads WHERE id = ?`, [threadId], function(e) {
@@ -135,6 +148,7 @@ module.exports = {
     getUserInfo,
     insertThread,
     renameThread,
+    updateThreadRagStatus,
     deleteThread,
     getThreads,
     insertMessage,
