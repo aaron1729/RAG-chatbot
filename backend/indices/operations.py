@@ -64,6 +64,8 @@ def create_thread_index(user_id):
 
 
 
+
+### BEWARE: this should probably delete documents, and probably doesn't currently. maybe just ALWAYS make a new index, it's not worth it to mess with this...
 def refresh_thread_index(user_id):
     print("refreshing...")
     threads = get_threads(user_id)
@@ -78,9 +80,12 @@ def refresh_thread_index(user_id):
     print("indices of refreshed documents:", true_indices)
     true_count = refreshed_list.count(True)
     print(f"refreshed {len(true_indices)} of {len(refreshed_list)} documents")
+    print(f"the new index has {len(index.docstore.docs)} documents")
     if true_count:
         index.storage_context.persist(persist_dir=f"./{user_id}")
     return index
+
+
 
 
 

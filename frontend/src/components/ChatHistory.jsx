@@ -8,10 +8,10 @@ function ChatHistory({ chatHistory, setChatHistory, renameOrRemoveThread, curren
     // this computes the && of all individual `isDropdownOpen` booleans.
     const [isAnyDropdownOpen, setIsAnyDropdownOpen] = useState(false)
 
-    useEffect(() => {
-        // for debugging
-        console.log(`isAnyDropdownOpen is now ${isAnyDropdownOpen}`);
-    }, [isAnyDropdownOpen])
+    // useEffect(() => {
+    //     // for debugging
+    //     console.log(`isAnyDropdownOpen is now ${isAnyDropdownOpen}`);
+    // }, [isAnyDropdownOpen])
 
     // the position of a ChatThreadMenu, should it exist
     const [chatThreadMenuPosition, setChatThreadMenuPosition] = useState({top: null, left: null})

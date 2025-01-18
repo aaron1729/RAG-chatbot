@@ -40,7 +40,10 @@ run `backend/database/init.js` to initialize the sqlite database.
 - [x] reroute chat functionality through llama server.
 - [ ] allow rag and re-rag of threads.
   - [x] do this on the server side.
-  - [ ] enable the user to do this, tracking which threads are unragged or have been updated since last getting ragged.
+  - [ ] enable the user to do this, i.e.:
+    - [ ] track which threads are unragged or have been updated since last getting ragged.
+    - [ ] update the index.
+    - [ ] toggle "RAG chat" on and off.
 - [ ] make a rag chat engine that references previous threads when responding.
 - [ ] enable streaming responses.
 - [ ] host on a server!

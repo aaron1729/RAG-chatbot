@@ -9,21 +9,21 @@ function Modal({ setIsOpen, type, params }) {
     const [modalInput, setModalInput] = useState("")
 
     const handleInputChange = (event) => {
-        if (event.target.id === 'modal-input') {
+        if (event.target.id === "modal-input") {
             setModalInput(event.target.value);
             console.log("modal input changed");
         }
     }
     
+    // this runs once the component has mounted (due to the empty dependency array).
     useEffect(() => {
-        // set the modalInput here (upon loading the component), as appropriate.
+
+        // set the modalInput here, as appropriate.
         if (type === "rename-thread") {
             document.getElementById('modal-input').value = params.threadTitle;
             // set the state here too; the listener is only for keystrokes.
             setModalInput(params.threadTitle);
-
         }
-        
         
         // add event listener for input changes
         window.addEventListener('input', handleInputChange);
@@ -31,7 +31,7 @@ function Modal({ setIsOpen, type, params }) {
         return () => {
             window.removeEventListener('input', handleInputChange);
         };
-    }, []); // empty dependency array to run once on mount
+    }, []);
 
     // close modal if "esc" key is pressed
     const handleKeyDown = (event) => {

@@ -41,6 +41,9 @@ function App() {
   //   }
   // }, [input])
 
+  // has RAG index.
+  // HARD-CODED FOR THE MOMENT, to be changed shortly. it's based on the user id.
+  const [hasRagIndex, setHasRagIndex] = useState(true);
   
   // whether we're currently getting a chat response
   const [isLoading, setIsLoading] = useState(false);
@@ -147,6 +150,7 @@ function App() {
         setCurrentThreadId={setCurrentThreadId}
         setMessages={setMessages}
         startNewChat={startNewChat}
+        hasRagIndex={hasRagIndex}
       />
       <div className="flex flex-col flex-1">
         <MessageWindow messages={messages} />
