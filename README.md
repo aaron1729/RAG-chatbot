@@ -1,4 +1,4 @@
-a silly little chatbot for chatting with RAG for previous chat threads.
+a silly little chatbot that uses RAG to reference previous chat threads.
 
 built using react + vite, with a sqlite database.
 
@@ -8,7 +8,7 @@ node server on port 3000.
 
 python fastAPI server on port 8000.
 
-this project requires a `.env` file in the root, with _no_ sensitive content (so it's present in the repo). it also requires `backend/.env`, which should look like:
+this project requires a `.env` file in the root, with _no_ sensitive content (so it's present in the repo). it also requires a `backend/.env`, which should look like:
 
 ```
 # SENSITIVE
@@ -21,9 +21,11 @@ PYTHON_SERVER_PORT=8000
 SYSTEM_PROMPT="Your name is Ragnar the RAGbot. You love to use RAG (retrieval-augmented generation) to help users read their documents!"
 ```
 
-of course, install the various packages and dependencies. and run `backend/database/init.js` to initialize the sqlite database.
+of course, install the various packages and dependencies.
 
 for the python server, create a virtual environment by going to `backend/` and doing `python -m venv python_venv`; then, activate it using `source python_venv/bin/activate`. deactivate using `deactivate`.
+
+run `backend/database/init.js` to initialize the sqlite database.
 
 ---
 
@@ -38,7 +40,7 @@ for the python server, create a virtual environment by going to `backend/` and d
 - [x] reroute chat functionality through llama server.
 - [ ] allow rag and re-rag of threads.
   - [x] do this on the server side.
-  - [ ] enable the user to do it as well, tracking which ones have been updated since getting ragged.
+  - [ ] enable the user to do this, tracking which threads are unragged or have been updated since last getting ragged.
 - [ ] make a rag chat engine that references previous threads when responding.
 - [ ] enable streaming responses.
 - [ ] host on a server!
