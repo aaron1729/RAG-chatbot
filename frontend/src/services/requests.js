@@ -1,5 +1,25 @@
 // note: these should always be imported _directly_ into the relevant component! there's no need for them to be passed as props.
 
+export async function getUserInfo(userId) {
+    try {
+        console.log("inside of the async function getUserInfo (on the frontend)")
+        const response = await fetch("/api/getUserInfo", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({userId})
+        });
+        if (!response.ok) {
+            throw new Error("response not ok in getUserInfo")
+        }
+        const data = await response.json();
+        return data
+    } catch (error) {
+        console.error("error getting user info:", error);
+        throw error;
+    }
+}
+
+
 export async function getChatHistory(userId) {
     try {
         console.log("inside of the async function getChatHistory (on the frontend)")

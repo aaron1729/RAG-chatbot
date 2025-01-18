@@ -18,7 +18,8 @@ db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE
+        email TEXT NOT NULL UNIQUE,
+        has_rag_index BOOLEAN DEFAULT FALSE
     )`);
     db.run(`CREATE TABLE IF NOT EXISTS threads (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,4 +44,3 @@ db.close(e => {
     }
     console.log("database connection closed.")
 })
-

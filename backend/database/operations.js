@@ -10,7 +10,24 @@ const db = new sqlite3.Database(path.join(__dirname, "chats.db"), (e) => {
     }
 })
 
-// since this is an async operation, return a promise, which hopefully resolves to the thread id.
+/////// THESE ASYUNC FUNCTIONS RETURN PROMISES, which (hopefully!) resolve the indicated values/types.
+
+// resolves to an object
+function getUserInfo(userId) {
+    console.log("inside of getUserInfo function on the server side")
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM users WHERE id = ?`, [userId], (e, row) => {
+            if (e) {
+                return reject(e);
+            }
+            console.log(`fetched user info for user with id ${userId}`);
+            console.log(`row is ${row}`)
+            resolve(row);
+        });
+    });
+}
+
+// resolves to the thread id
 function insertThread(userId, title) {
     return new Promise((resolve, reject) => {
         db.run(`INSERT INTO threads (title, user_id) VALUES (?, ?)`, [title, userId], function(e) {
@@ -23,7 +40,7 @@ function insertThread(userId, title) {
     });
 };
 
-// since this is an async operation, return a promise, which hopefully resolves.
+// resolves to a boolean
 function renameThread(threadId, title) {
     return new Promise((resolve, reject) => {
         db.run(`UPDATE threads SET title = ? WHERE id = ?`, [title, threadId], function(e) {
@@ -36,6 +53,7 @@ function renameThread(threadId, title) {
     });
 };
 
+// resolves to a boolean
 function deleteThread(threadId) {
     return new Promise((resolve, reject) => {
         db.run(`DELETE FROM threads WHERE id = ?`, [threadId], function(e) {
@@ -48,7 +66,7 @@ function deleteThread(threadId) {
     });
 };
 
-// since this is an async operation, return a promise, which hopefully resolves to the array of thread titles and ids for the given user id.
+// resolves to the array of thread titles and ids for the given user id
 function getThreads(userId) {
     return new Promise((resolve, reject) => {
     db.all(`SELECT id, title, rag_status FROM threads WHERE user_id = ?`, [userId], (e, rows) => {
@@ -61,7 +79,7 @@ function getThreads(userId) {
     });
 };
 
-// since this is an async operation, return a promise, which hopefully resolves to the message id.
+// resolves to the message id
 function insertMessage(threadId, role, message) {
     return new Promise((resolve, reject) => {
         db.run(`INSERT INTO messages (thread_id, role, content) VALUES (?, ?, ?)`, [threadId, role, message], function(e) {
@@ -74,6 +92,7 @@ function insertMessage(threadId, role, message) {
     });
 };
 
+// resolves to the array of message objects for the given thread id
 function getMessages(threadId) {
     return new Promise((resolve, reject) => {
         db.all(`SELECT role, content FROM messages WHERE thread_id = ?`, [threadId], (e, rows) => {
@@ -96,6 +115,7 @@ function closeDatabase() {
 }
 
 module.exports = {
+    getUserInfo,
     insertThread,
     renameThread,
     deleteThread,

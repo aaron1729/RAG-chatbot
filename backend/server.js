@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000
 const TEMP_USER_ID = 4
 
 // database functions
-const { insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database/operations.js");
+const { getUserInfo, insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database/operations.js");
 
 // for server
 const express = require("express");
@@ -97,6 +97,21 @@ app.post("/api/chat", async (req, res) => {
     }
 })
 
+// handle requests to get a user's info.
+app.post("/api/getUserInfo", async (req, res) => {
+    console.log("inside of the `/api/getUserInfo` endpoint handler")
+    const { userId } = req.body
+    try {
+        const userInfo = await getUserInfo(userId)
+        console.log(`the user info is: ${userInfo}`)
+        res.json(userInfo)
+    } catch (e) {
+        console.error(`error getting user info: ${e}`);
+        res.status(500).json({error: e.message});
+    }
+})
+
+
 // handle requests to get a user's chat history.
 app.post("/api/getChatHistory", async (req, res) => {
     console.log("inside of the `/api/getChatHistory` endpoint handler")
@@ -113,7 +128,7 @@ app.post("/api/getChatHistory", async (req, res) => {
         res.json(threads)
     } catch (e) {
         console.error(`error getting chat history: ${e}`);
-        res.status(500).json({error:e.message})
+        res.status(500).json({error: e.message});
     }
 })
 
@@ -128,7 +143,7 @@ app.post("/api/getChatThread", async (req, res) => {
         res.json(messages)
     } catch (e) {
         console.error(`error getting chat thread: ${e}`);
-        res.status(500).json({error:e.message})
+        res.status(500).json({error: e.message});
     }
 })
 
@@ -144,8 +159,8 @@ app.post("/api/renameChatThread", async (req, res) => {
             return res.status(404).json({error: "thread title not successfully updated"})
         }
     } catch (e) {
-        console.error("error creating or updating thread: " + e.message)
-        res.status(500).json({error: e.message})
+        console.error("error creating or updating thread: " + e.message);
+        res.status(500).json({error: e.message});
     }
 })
 
@@ -161,8 +176,8 @@ app.post("/api/deleteChatThread", async (req, res) => {
             return res.status(404).json({error: "thread not found or not successfully deleted"})
         }
     } catch (e) {
-        console.error("error deleting thread: " + e.message)
-        res.status(500).json({error: e.message})
+        console.error("error deleting thread: " + e.message);
+        res.status(500).json({error: e.message});
     }
 })
 

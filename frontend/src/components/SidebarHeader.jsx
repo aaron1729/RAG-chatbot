@@ -1,4 +1,4 @@
-import { PlusCircleIcon, PackageSearch } from 'lucide-react';
+import { PlusCircleIcon, PackageSearch, Boxes } from 'lucide-react';
 
 function SidebarHeader({ startNewChat, currentThreadId, hasRagIndex }) {
     return (
@@ -21,7 +21,7 @@ function SidebarHeader({ startNewChat, currentThreadId, hasRagIndex }) {
             className={`rounded px-2 py-0.5 flex items-center border-2 ${hasRagIndex ? 'hover:bg-fuchsia-400 border-fuchsia-400' : 'text-gray-300 border-white'} whitespace-nowrap`}
             onClick={() => {
                 if (currentThreadId) {
-                    // AI-GENERATED: dummy function with a console log for now.
+                    // dummy function with a console log for now.
                     console.log("rag chat button clicked");
                 }
             }}

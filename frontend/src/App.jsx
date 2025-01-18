@@ -4,7 +4,7 @@ import './App.css';
 import Sidebar from './components/Sidebar.jsx';
 import MessageWindow from './components/MessageWindow.jsx';
 import TextInput from './components/TextInput.jsx';
-import { sendMessage, getChatHistory } from './services/requests.js';
+import { sendMessage, getChatHistory, getUserInfo } from './services/requests.js';
 
 
 
@@ -42,7 +42,7 @@ function App() {
   // }, [input])
 
   // has RAG index.
-  // HARD-CODED FOR THE MOMENT, to be changed shortly. it's based on the user id.
+  // HARD-CODED TO TRUE FOR THE MOMENT, to be changed shortly. it's based on the user id.
   const [hasRagIndex, setHasRagIndex] = useState(true);
   
   // whether we're currently getting a chat response
@@ -93,7 +93,16 @@ function App() {
         console.error("error getting chat history:", e)
       }
     }
-    getChatHistoryHere()
+    async function getUserInfoHere() {
+      try {
+        const userInfo = await getUserInfo(TEMP_USER_ID)
+        console.log(`inside of App, got userInfo and it is: ${userInfo}`)
+      } catch (e) {
+        console.error("error getting user info:", e)
+      }
+    }
+    getChatHistoryHere();
+    getUserInfoHere();
   }, [])
 
   function renameOrRemoveThread(threadId, title) {
