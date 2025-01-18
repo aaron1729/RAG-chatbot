@@ -104,6 +104,9 @@ app.post("/api/getUserInfo", async (req, res) => {
     try {
         const userInfo = await getUserInfo(userId)
         console.log(`the user info is: ${userInfo}`)
+        // switch from snake case to camel case.
+        userInfo.hasRagIndex = userInfo.has_rag_index
+        delete userInfo.has_rag_index
         res.json(userInfo)
     } catch (e) {
         console.error(`error getting user info: ${e}`);

@@ -9,6 +9,7 @@ import { sendMessage, getChatHistory, getUserInfo } from './services/requests.js
 
 
 // for now this is hard-coded, here and in server.js.
+// whenever actually handling it, be sure to handle the logic for adding a new user, and of course ensure that getUserInfo here never returns an empty value.
 const TEMP_USER_ID = 4
 
 
@@ -43,7 +44,11 @@ function App() {
 
   // has RAG index.
   // HARD-CODED TO TRUE FOR THE MOMENT, to be changed shortly. it's based on the user id.
-  const [hasRagIndex, setHasRagIndex] = useState(true);
+  const [hasRagIndex, setHasRagIndex] = useState(null);
+
+  useEffect(() => {
+    console.log(`hasRagIndex is now: ${hasRagIndex}`)
+  }, [hasRagIndex])
   
   // whether we're currently getting a chat response
   const [isLoading, setIsLoading] = useState(false);
@@ -85,6 +90,7 @@ function App() {
   // this will run as soon as the component mounts.
   useEffect(() => {
     // for silly reasons, one must _define_ an async function _inside_ of the `useEffect` callback (so that's what's done here).
+    
     async function getChatHistoryHere() {
       try {
         const chatHistory = await getChatHistory(TEMP_USER_ID)
@@ -93,15 +99,25 @@ function App() {
         console.error("error getting chat history:", e)
       }
     }
+    
+    getChatHistoryHere();
+    
     async function getUserInfoHere() {
       try {
         const userInfo = await getUserInfo(TEMP_USER_ID)
-        console.log(`inside of App, got userInfo and it is: ${userInfo}`)
+        console.log(`inside of App, got userInfo and it is: ${JSON.stringify(userInfo)}`)
+
+        // userInfo.hasRagIndex comes back as 0 or 1, but be explicit about the boolean here.
+        if (userInfo.hasRagIndex) {
+          setHasRagIndex(true)
+        } else {
+          setHasRagIndex(false)
+        }
       } catch (e) {
         console.error("error getting user info:", e)
       }
     }
-    getChatHistoryHere();
+    
     getUserInfoHere();
   }, [])
 

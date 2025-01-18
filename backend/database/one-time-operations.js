@@ -31,6 +31,16 @@ db.run(`INSERT INTO users (id, username, email) VALUES (?, ?, ?)`, [5, "cindy", 
 });
 
 
+// AI-GENERATED: updating john's has_rag_index to TRUE
+db.run(`UPDATE users SET has_rag_index = ? WHERE id = ?`, [true, 4], function(e) {
+    if (e) {
+        console.error("error updating user has_rag_index: " + e.message);
+    } else {
+        console.log(`updated user with id 4: has_rag_index is now ${true}`);
+    }
+});
+
+
 
 
 db.all(`SELECT * FROM users`, [], (err, rows) => {

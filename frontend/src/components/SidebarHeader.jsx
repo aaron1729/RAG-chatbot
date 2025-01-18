@@ -27,7 +27,7 @@ function SidebarHeader({ startNewChat, currentThreadId, hasRagIndex }) {
             }}
             >
                 <PackageSearch
-                    className={`h-4 w-4 ${currentThreadId ? '' : 'text-gray-300'}`}
+                    className={`h-4 w-4 ${hasRagIndex ? '' : 'text-gray-300'}`}
                 />
                 <span>&nbsp;RAG chat!</span>
             </div>
