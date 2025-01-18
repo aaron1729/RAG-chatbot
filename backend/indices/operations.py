@@ -78,7 +78,8 @@ def refresh_thread_index(user_id):
     print("indices of refreshed documents:", true_indices)
     true_count = refreshed_list.count(True)
     print(f"refreshed {len(true_indices)} of {len(refreshed_list)} documents")
-    index.storage_context.persist(persist_dir=f"./{user_id}")
+    if true_count:
+        index.storage_context.persist(persist_dir=f"./{user_id}")
     return index
 
 

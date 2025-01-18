@@ -36,9 +36,11 @@ for the python server, create a virtual environment by going to `backend/` and d
 - [x] add a "new chat" button to the header.
 - [x] allow user to change the title of the thread using the `updateThread` function.
 - [x] reroute chat functionality through llama server.
-- [ ] allow RAG and re-RAG of threads.
-- [ ] make a RAG chat engine that references previous threads when responding.
-- [ ] enable streaming of responses.
+- [ ] allow rag and re-rag of threads.
+  - [x] do this on the server side.
+  - [ ] enable the user to do it as well, tracking which ones have been updated since getting ragged.
+- [ ] make a rag chat engine that references previous threads when responding.
+- [ ] enable streaming responses.
 - [ ] host on a server!
 
 ---
