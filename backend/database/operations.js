@@ -59,11 +59,11 @@ function insertThread(userId, title) {
 // resolves to a boolean
 function renameThread(threadId, title) {
     return new Promise((resolve, reject) => {
-        db.run(`UPDATE threads SET title = ? WHERE id = ?`, [title, threadId], function(e) {
+        db.run(`UPDATE threads SET title = ?, rag_status = ? WHERE id = ?`, [title, "NEEDS_UPDATE", threadId], function(e) {
             if (e) {
                 return reject(e);
             }
-            console.log(`thread with id ${threadId} has been renamed to "${title}"`);
+            console.log(`thread with id ${threadId} has been renamed to "${title}" and rag_status set to "NEEDS_UPDATE"`);
             resolve(true);
         });
     });

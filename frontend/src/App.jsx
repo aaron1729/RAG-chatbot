@@ -126,7 +126,7 @@ function App() {
       console.log("renaming thread")
       const newChatHistory = chatHistory.map(chatThread => {
         if (chatThread.id === threadId) {
-          return {id: chatThread.id, title: title}
+          return {id: chatThread.id, title: title, ragStatus: "NEEDS_UPDATE"}
         } else {
           return chatThread
         }})

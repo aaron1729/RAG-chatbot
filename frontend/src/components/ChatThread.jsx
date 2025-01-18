@@ -12,6 +12,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
     const [isHovered, setIsHovered] = useState(false);
     const [showOptionsButton, setShowOptionsButton] = useState(false);
     const buttonRef = useRef(null);
+    const [showTooltip, setShowTooltip] = useState(false);
 
     useEffect(() => {
         // this indeed computes the `&&` of all instances of `isDropdownOpen`, because only at most one of them will ever be set to `true`.
@@ -51,6 +52,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
                 <PackagePlus
                     {...props}
                     className={currentThreadId === chatThread.id ? "text-blue-200" : "text-blue-600"}
+                    title="never indexed"
                 />
             )
         }
@@ -59,6 +61,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
                 <PackageCheck
                     {...props}
                     className={currentThreadId === chatThread.id ? "text-green-400" : "text-green-700"}
+                    title="up to date"
                 />
             );
         }
@@ -67,6 +70,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
                 <PackageOpen
                     {...props}
                     className={currentThreadId === chatThread.id ? "text-amber-400" : "text-amber-600"}
+                    title="needs update"
                 />
             );
         }
@@ -75,16 +79,29 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
     return (
         <div
             onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseLeave={() => {
+                setIsHovered(false);
+                setShowTooltip(false);
+            }}
             onClick={onThreadClick}
             className={`
                 ${currentThreadId === chatThread.id ? 'bg-blue-400 text-white hover:bg-blue-500' : 'bg-white hover:bg-gray-100'}
                 py-0.5 px-0.5 mx-2 rounded-lg
                 transition-colors duration-50
+                relative
             `}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <RAGIcon />
+                <span
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                    className="relative"
+                >
+                    <RAGIcon />
+                    <div className={`absolute left-full ml-2 p-1 border border-gray-300 bg-white shadow-md z-10 rounded transition-opacity duration-200 ${showTooltip ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                        TEST
+                    </div>
+                </span>
                 <span
                     className={`ml-2.5 whitespace-nowrap overflow-hidden truncate flex-1 text-left ${chatThread.id !== currentThreadId ? 'cursor-pointer' : ''}`}
                     onClick={() => {}}
