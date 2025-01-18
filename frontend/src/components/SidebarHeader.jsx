@@ -4,9 +4,10 @@ function SidebarHeader({ startNewChat, currentThreadId }) {
     return (
         <div className="flex items-center">
             <div className="flex items-center justify-center w-full">
-                <div className="pt-2">
-                    <button
-                    className={`rounded p-0.5 flex items-center ${currentThreadId ? 'hover:bg-green-500 cursor-pointer' : 'text-gray-300'}`}
+                <div className="pt-1">
+                    <div
+                    // the existence of a non-null `currentThreadId` is equivalent to 
+                    className={`rounded px-2 py-0.5 flex items-center ${currentThreadId ? 'hover:bg-green-500' : 'text-gray-300'}`}
                     onClick={() => {
                         if (currentThreadId) {
                             startNewChat();
@@ -17,7 +18,7 @@ function SidebarHeader({ startNewChat, currentThreadId }) {
                             className={`h-4 w-4 ${currentThreadId ? '' : 'text-gray-300'}`}
                         />
                         <span>&nbsp;new chat!</span>
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>

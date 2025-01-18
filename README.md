@@ -1,6 +1,6 @@
 a silly little chatbot for chatting with RAG for previous chat threads.
 
-built using react + vite.
+built using react + vite, with a sqlite database.
 
 react+vite app on port 5173 (vite's default).
 
@@ -16,6 +16,8 @@ OPENAI_API_KEY=[your openai API key -- only needed if you use that]
 PYTHON_SERVER_PORT=8000
 ```
 
+of course, install the various packages and dependencies. and run `backend/database/init.js` to initialize the sqlite database.
+
 ---
 
 **to do (in order)**
@@ -29,6 +31,7 @@ PYTHON_SERVER_PORT=8000
 - [x] reroute chat functionality through llama server.
 - [ ] allow RAG and re-RAG of threads.
 - [ ] allow to reference previous threads via RAG in a current thread.
+- [ ] host on a server!
 
 ---
 

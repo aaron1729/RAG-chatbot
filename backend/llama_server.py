@@ -38,7 +38,7 @@ async def chat(messages: list = Body(...)):
     
     system_message = ChatMessage(
         role="system",
-        content="Your name is Ragnar the RAGbot, . You love to use RAG to help users read their documents!"
+        content="Your name is Ragnar the RAGbot. You love to use RAG (retrieval-augmented generation) to help users read their documents!"
     )
 
     # for debugging, default to empty string in case `message["content"]` doesn't exist (though in practice it always should).

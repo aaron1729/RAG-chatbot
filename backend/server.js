@@ -2,8 +2,11 @@ require("dotenv").config();
 const PYTHON_SERVER_PORT = process.env.PYTHON_SERVER_PORT || 8000;
 const PORT = process.env.PORT || 3000
 
+// for now this is hard-coded, here and in App.jsx.
+const TEMP_USER_ID = 4
+
 // database functions
-const { insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database.js");
+const { insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase } = require("./database/operations.js");
 
 // for server
 const express = require("express");
@@ -37,8 +40,7 @@ app.post("/api/chat", async (req, res) => {
             // the `'sv'` is for sweden's standards for formatting the date & time -- a convenient trick for getting "YYYY-MM-DD HH:MM:SS".
             const timestamp = new Date().toLocaleString('sv')
             console.log("timestamp is:", timestamp)
-            // the first argument is the userId. this is currently hard-coded.
-            threadId = await insertThread(5, `new thread at ${timestamp}`)
+            threadId = await insertThread(TEMP_USER_ID, `new thread at ${timestamp}`)
             console.log(`inside of \`/api/chat\` endpoint handler: just made a new thread, with threadId ${threadId}`)
             insertMessage(threadId, "assistant", messages[0].content)
         }

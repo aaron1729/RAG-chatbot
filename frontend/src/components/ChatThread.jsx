@@ -15,7 +15,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
 
     useEffect(() => {
         // this indeed computes the `&&` of all instances of `isDropdownOpen`, because only at most one of them will ever be set to `true`.
-        console.log(`isDropdownOpen at index ${index} is now ${isDropdownOpen}`);
+        // console.log(`isDropdownOpen at index ${index} is now ${isDropdownOpen}`);
         setIsAnyDropdownOpen(isDropdownOpen);
     }, [isDropdownOpen, setIsAnyDropdownOpen])
 
