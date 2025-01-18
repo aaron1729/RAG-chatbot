@@ -131,7 +131,7 @@ app.post("/api/indexChats", async (req, res) => {
         if (success) {
             updateUserInfo(userId, {"has_rag_index": true})
         }
-        res.status(200);
+        res.status(200).json(success);
     } catch (e) {
         console.error(`error indexing chats: ${e}`);
         res.status(500).json({error: e.message});

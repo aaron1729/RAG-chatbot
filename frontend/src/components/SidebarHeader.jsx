@@ -1,6 +1,6 @@
 import { PlusCircleIcon, PackageSearch, Boxes } from 'lucide-react';
 
-function SidebarHeader({ startNewChat, currentThreadId, hasRagIndex, handleIndexChatsSubmit }) {
+function SidebarHeader({ startNewChat, currentThreadId, hasRagIndex, handleIndexChatsSubmit, allRagStatusesUpToDate }) {
     return (
         <div className="flex flex-wrap justify-center items-center gap-2 pt-1">
             <div
@@ -32,8 +32,8 @@ function SidebarHeader({ startNewChat, currentThreadId, hasRagIndex, handleIndex
                 <span>&nbsp;RAG chat!</span>
             </div>
             <div
-                className={`rounded px-2 py-0.5 flex items-center border-2 hover:bg-orange-400 border-orange-400 whitespace-nowrap`}
-                onClick={handleIndexChatsSubmit} // AI-GENERATED: handle the index chats button click
+                className={`rounded px-2 py-0.5 flex items-center border-2 ${allRagStatusesUpToDate ? 'text-gray-300 border-white' : 'hover:bg-orange-400 border-orange-400'} whitespace-nowrap`}
+                onClick={!allRagStatusesUpToDate ? handleIndexChatsSubmit : null}
             >
                 <Boxes className="h-4 w-4" />
                 <span>&nbsp;index chats!</span>

@@ -167,13 +167,16 @@ function App() {
   }
 
   async function handleIndexChatsSubmit (e) {
+    console.log("inside of handleIndexChatsSubmit")
     e.preventDefault(); // to stop the browser from reloading the whole page
     try {
       const data = await indexChats(TEMP_USER_ID);
-      console.log(`data is: ${data}`)
-
-
-
+      console.log(`inside of handleIndexChatsSubmit, data is: ${data}`);
+      const newChatHistory = chatHistory.map(chatThread => ({
+          ...chatThread,
+          ragStatus: "UP_TO_DATE"
+      }));
+      setChatHistory(newChatHistory);
     } catch (error) {
       console.log("error:", error)
     }

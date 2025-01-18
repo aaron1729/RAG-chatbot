@@ -11,21 +11,14 @@ load_dotenv()
 PORT = int(os.environ.get("PYTHON_SERVER_PORT", 8000))
 SYSTEM_PROMPT = os.environ.get("SYSTEM_PROMPT")
 
-
-
 # for the fastapi/uvicorn server
 from fastapi import FastAPI, Body, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-
-
-
-# from database.operations import get_all_messages, get_messages # ACTUALLY NO, these might _only_ get imported by `indices/operations.py`.
+# operations
+from database.operations import update_rag_status_all_threads
 from indices.operations import index_chats
-
-
-
 
 # llama index
 from llama_index.llms.openai import OpenAI
@@ -44,8 +37,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-
+##############################
 
 # this is just for convenience: to test if the server is running, point the browser to `http://localhost:8000` (or `http://0.0.0.0:8000`).
 @app.get("/")
@@ -77,10 +69,17 @@ async def index_chats_llama_server(user_id: int = Body(...)):
     try:
         index_chats(user_id)
         print(f"indexed chats for user {user_id}")
-        return True
+
     except Exception as e:
-        print("in the `except` block")
+        print("in the `except` block: failed to index chats")
         raise HTTPException(status_code=500, detail=str(e))
+    try:
+        update_rag_status_all_threads(user_id, "UP_TO_DATE")
+        return True
+    except:
+        print("in the `exception` block: failed to set rag statuses of threads")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 
 

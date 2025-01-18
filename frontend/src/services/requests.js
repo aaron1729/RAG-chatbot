@@ -31,6 +31,7 @@ export async function indexChats(userId) {
             throw new Error("response not ok in indexChats")
         }
         const data = await response.json();
+        console.log(`inside of indexChats, the returned data is: ${data}`)
         return data;
     } catch (error) {
         console.error("error indexing chats:", error);

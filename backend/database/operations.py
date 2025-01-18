@@ -57,7 +57,7 @@ def get_all_threads(user_id):
 def update_rag_status_all_threads(user_id, rag_status):
     db_cursor.execute(f"UPDATE threads SET rag_status = '{rag_status}' WHERE user_id = ?", (user_id,))
     db_connection.commit()  # commit the changes to the database
-    print(f"updated rag status to 'UP_TO_DATE' for user with id {user_id}")
+    print(f"updated rag status to 'UP_TO_DATE' for all threads with {user_id = }")
     return None
 
 
