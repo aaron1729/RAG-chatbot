@@ -76,6 +76,12 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
         }
     }
 
+    function tooltipText(ragStatus) {
+        if (ragStatus === "UP_TO_DATE") return "up to date!"
+        if (ragStatus === "NEEDS_UPDATE") return "needs update!"
+        if (ragStatus === "NEVER_INDEXED") return "this chat has never been indexed!"
+    }
+
     return (
         <div
             onMouseEnter={() => setIsHovered(true)}
@@ -98,13 +104,12 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
                     className="relative"
                 >
                     <RAGIcon />
-                    <div className={`absolute left-full ml-2 p-1 border border-gray-300 bg-white shadow-md z-10 rounded transition-opacity duration-200 ${showTooltip ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                        TEST
+                    <div className={`absolute left-0 top-1/2 transform -translate-y-1/2 ml-5 p-1 text-xs text-black border border-gray-300 bg-white shadow-md z-10 rounded transition-opacity duration-200 ${showTooltip ? 'opacity-100' : 'opacity-0 pointer-events-none'} whitespace-nowrap`}>
+                        {tooltipText(chatThread.ragStatus)}
                     </div>
                 </span>
                 <span
                     className={`ml-2.5 whitespace-nowrap overflow-hidden truncate flex-1 text-left ${chatThread.id !== currentThreadId ? 'cursor-pointer' : ''}`}
-                    onClick={() => {}}
                 >
                     {chatThread.title}
                 </span>
