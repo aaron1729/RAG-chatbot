@@ -5,7 +5,7 @@ import { Pencil, Trash2 } from 'lucide-react';
 import Modal from './Modal.jsx';
 
 // this component only gets rendered (i.e. the function is fired) when `isDropdownOpen` in the above component is `true`.
-function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, threadId, renameOrRemoveThread }) {
+function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, threadId, threadTitle, renameOrRemoveThread }) {
 
     console.log(`ChatThreadMenu component fired, with threadId ${threadId}`)
 
@@ -90,6 +90,7 @@ function ChatThreadMenu({ setIsOpen, position, buttonRef, setShowOptionsButton, 
                     type={modalType}
                     params={{
                         threadId,
+                        threadTitle,
                         renameOrRemoveThread,
                         setIsDropdownOpen: setIsOpen,
                         setShowOptionsButton: setShowOptionsButton
@@ -108,6 +109,7 @@ ChatThreadMenu.propTypes = {
     buttonRef: PropTypes.object,
     setShowOptionsButton: PropTypes.func,
     threadId: PropTypes.number,
+    threadTitle: PropTypes.string,
     renameOrRemoveThread: PropTypes.func,
 }
 

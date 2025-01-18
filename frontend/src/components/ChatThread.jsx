@@ -82,6 +82,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
                         buttonRef={buttonRef}
                         setShowOptionsButton={setShowOptionsButton}
                         threadId={chatThread.id}
+                        threadTitle={chatThread.title}
                         renameOrRemoveThread={renameOrRemoveThread}
                     />
                 )}

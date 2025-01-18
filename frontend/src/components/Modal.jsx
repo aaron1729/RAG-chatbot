@@ -16,6 +16,15 @@ function Modal({ setIsOpen, type, params }) {
     }
     
     useEffect(() => {
+        // set the modalInput here (upon loading the component), as appropriate.
+        if (type === "rename-thread") {
+            document.getElementById('modal-input').value = params.threadTitle;
+            // set the state here too; the listener is only for keystrokes.
+            setModalInput(params.threadTitle);
+
+        }
+        
+        
         // add event listener for input changes
         window.addEventListener('input', handleInputChange);
         // cleanup function to remove event listener
