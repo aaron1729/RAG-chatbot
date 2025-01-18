@@ -1,6 +1,11 @@
-require("dotenv").config();
+// pull from `backend/.env`, not the `.env` file in the root.
+const path = require("path");
+require("dotenv").config({
+    path: path.join(__dirname, ".env")
+});
 const PYTHON_SERVER_PORT = process.env.PYTHON_SERVER_PORT || 8000;
 const PORT = process.env.PORT || 3000
+// const SYSTEM_PROMPT = process.env.SYSTEM_PROMPT;
 
 // for now this is hard-coded, here and in App.jsx.
 const TEMP_USER_ID = 4
@@ -44,7 +49,7 @@ app.post("/api/chat", async (req, res) => {
             console.log(`inside of \`/api/chat\` endpoint handler: just made a new thread, with threadId ${threadId}`)
             insertMessage(threadId, "assistant", messages[0].content)
         }
-
+        
         // save the user message to the database.
         insertMessage(threadId, "user", messages[messages.length - 1].content)
         

@@ -11,9 +11,14 @@ python fastAPI server on port 8000.
 this project requires a `.env` file in the root, with _no_ sensitive content (so it's present in the repo). it also requires `backend/.env`, which should look like:
 
 ```
-VITE_ANTHROPIC_API_KEY=[your anthropic API key -- only needed if you use that]
-OPENAI_API_KEY=[your openai API key -- only needed if you use that]
+# SENSITIVE
+VITE_ANTHROPIC_API_KEY=[enter yours here, if needed]
+OPENAI_API_KEY=[enter yours here, if needed]
+
+# NOT SENSITIVE
+PORT=3000
 PYTHON_SERVER_PORT=8000
+SYSTEM_PROMPT="Your name is Ragnar the RAGbot. You love to use RAG (retrieval-augmented generation) to help users read their documents!"
 ```
 
 of course, install the various packages and dependencies. and run `backend/database/init.js` to initialize the sqlite database.

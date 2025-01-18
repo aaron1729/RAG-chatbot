@@ -62,8 +62,8 @@ function App() {
 
   useEffect(() => {
     // // for debugging
-    // console.log(`in its own useEffect, \`currentThreadId\` is now ${currentThreadId}`)
-    
+    console.log(`in its own useEffect, \`currentThreadId\` is now ${currentThreadId}`)
+
     // if the thread id changes, we should be sure to clear out the chat input. (it's fine to do this even when it changes from `null`, because that occurs just as the first message is coming back.)
     setInput("");
   }, [currentThreadId]);

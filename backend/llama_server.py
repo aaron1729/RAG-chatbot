@@ -4,11 +4,15 @@ from dotenv import load_dotenv
 load_dotenv()
 # the second argument is the fallback value
 PORT = int(os.environ.get("PYTHON_SERVER_PORT", 8000))
+SYSTEM_PROMPT = os.environ.get("SYSTEM_PROMPT")
 
 # for the fastapi/uvicorn server
 from fastapi import FastAPI, Body, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+
+from database.operations import get_threads, get_messages
+
 
 # llama index
 from llama_index.llms.openai import OpenAI
@@ -22,7 +26,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"], # only allow requests from the node server
+    allow_origins=[f"http://localhost:{os.environ.get("PORT")}"], # only allow requests from the node server
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -37,10 +41,7 @@ async def read_root():
 async def chat(messages: list = Body(...)):
     print("received a post request to the `/chat` endpoint")
     
-    system_message = ChatMessage(
-        role="system",
-        content="Your name is Ragnar the RAGbot. You love to use RAG (retrieval-augmented generation) to help users read their documents!"
-    )
+    system_message = ChatMessage(role="system", content=SYSTEM_PROMPT)
 
     # for debugging, default to empty string in case `message["content"]` doesn't exist (though in practice it always should).
     formatted_messages = [system_message] + [ChatMessage(role=message["role"], content=message.get("content", "")) for message in messages]
