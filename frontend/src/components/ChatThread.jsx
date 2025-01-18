@@ -77,9 +77,9 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
     }
 
     function tooltipText(ragStatus) {
-        if (ragStatus === "UP_TO_DATE") return "up to date!"
-        if (ragStatus === "NEEDS_UPDATE") return "needs update!"
-        if (ragStatus === "NEVER_INDEXED") return "this chat has never been indexed!"
+        if (ragStatus === "UP_TO_DATE") return "chat is up to date in the index!"
+        if (ragStatus === "NEEDS_UPDATE") return "chat needs to be updated in the index!"
+        if (ragStatus === "NEVER_INDEXED") return "chat has never been indexed!"
     }
 
     return (
