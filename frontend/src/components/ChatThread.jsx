@@ -43,11 +43,34 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
     }
 
     function RAGIcon() {
-        const lastRagTimestamp = chatThread.lastRagTimestamp
-        // const lastMessageTimestamp = 
-    }
+        // pass uniform props to all icons.
+        const props = { size: 18 };
 
-    
+        if (chatThread.ragStatus === "NEVER_INDEXED") {
+            return (
+                <PackagePlus
+                    {...props}
+                    className={currentThreadId === chatThread.id ? "text-white" : "text-blue-600"}
+                />
+            )
+        }
+        if (chatThread.ragStatus === "UP_TO_DATE") {
+            return (
+                <PackageCheck
+                    {...props}
+                    className={currentThreadId === chatThread.id ? "text-green-200" : "text-green-700"}
+                />
+            );
+        }
+        if (chatThread.ragStatus === "NEEDS_UPDATE") {
+            return (
+                <PackageOpen
+                    {...props}
+                    className={currentThreadId === chatThread.id ? "text-amber-200" : "text-amber-600"}
+                />
+            );
+        }
+    }
 
     return (
         <div
@@ -61,6 +84,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
             `}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <RAGIcon />
                 <span
                     className={`ml-2.5 whitespace-nowrap overflow-hidden truncate flex-1 text-left ${chatThread.id !== currentThreadId ? 'cursor-pointer' : ''}`}
                     onClick={() => {}}
