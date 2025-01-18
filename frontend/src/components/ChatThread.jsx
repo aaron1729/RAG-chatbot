@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { MoreVertical } from 'lucide-react';
+import { MoreVertical, PackagePlus, PackageCheck, PackageOpen } from 'lucide-react';
 import ChatThreadMenu from './ChatThreadMenu';
 import { getChatThread } from '../services/requests';
 
-// the prop `chatThread` is an object with keys `id` and `title`.
+// the prop `chatThread` is an object with keys `id` and `title` and `ragStatus`.
 function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMenuPosition, isAnyDropdownOpen, setIsAnyDropdownOpen, renameOrRemoveThread, currentThreadId, setCurrentThreadId, setMessages }) {
     
     // the state `isDropdownOpen` tracks whether the `ChatThreadMenu` component is rendering. but note that it's hidden when additionally the modal is open.
@@ -42,6 +42,13 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
         }
     }
 
+    function RAGIcon() {
+        const lastRagTimestamp = chatThread.lastRagTimestamp
+        // const lastMessageTimestamp = 
+    }
+
+    
+
     return (
         <div
             onMouseEnter={() => setIsHovered(true)}
@@ -54,7 +61,7 @@ function ChatThread({ chatThread, index, chatThreadMenuPosition, setChatThreadMe
             `}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span 
+                <span
                     className={`ml-2.5 whitespace-nowrap overflow-hidden truncate flex-1 text-left ${chatThread.id !== currentThreadId ? 'cursor-pointer' : ''}`}
                     onClick={() => {}}
                 >

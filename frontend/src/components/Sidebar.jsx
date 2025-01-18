@@ -2,7 +2,7 @@ import SidebarHeader from "./SidebarHeader";
 import ChatHistory from "./ChatHistory";
 import PropTypes from 'prop-types';
 
-// the props `chatHistory` is a list of `chatThread` objects (each with keys `id` and `title`).
+// the props `chatHistory` is a list of `chatThread` objects (each with keys `id` and `title` and and `ragStatus`).
 function Sidebar({ chatHistory, renameOrRemoveThread, currentThreadId, setCurrentThreadId, setMessages, startNewChat, hasRagIndex }) {
     return (
         <div

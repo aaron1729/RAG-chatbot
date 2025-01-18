@@ -106,9 +106,9 @@ app.post("/api/getChatHistory", async (req, res) => {
         console.log("the threads are...")
         threads.forEach(thread => {
             // switch from snake case to camel case.
-            thread.lastRagTimestamp = thread.last_rag_timestamp;
-            delete thread.last_rag_timestamp;
-            console.log(`thread id: ${thread.id}, title: ${thread.title}, lastRagTimestamp: ${thread.lastRagTimestamp}`);
+            thread.ragStatus = thread.rag_status;
+            delete thread.rag_status;
+            console.log(`thread id: ${thread.id}, title: ${thread.title}, ragStatus: ${thread.ragStatus}`);
         });
         res.json(threads)
     } catch (e) {

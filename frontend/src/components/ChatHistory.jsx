@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ChatThread from "./ChatThread";
 import PropTypes from 'prop-types';
 
-// the `chatHistory` props is a list of ChatThread objects (each with keys `id` and `title).
+// the `chatHistory` props is a list of ChatThread objects (each with keys `id` and `title` and `ragStatus`).
 function ChatHistory({ chatHistory, setChatHistory, renameOrRemoveThread, currentThreadId, setCurrentThreadId, setMessages }) {
 
     // this computes the && of all individual `isDropdownOpen` booleans.

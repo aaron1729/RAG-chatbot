@@ -25,7 +25,7 @@ db.serialize(() => {
         title TEXT NOT NULL,
         user_id INTEGER REFERENCES users(id),
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-        last_rag_timestamp DATETIME DEFAULT NULL
+        rag_status TEXT NOT NULL CHECK(rag_status IN ('NEVER_INDEXED', 'UP_TO_DATE', 'NEEDS_UPDATE')) DEFAULT 'NEVER_INDEXED'
     )`);
     db.run(`CREATE TABLE IF NOT EXISTS messages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

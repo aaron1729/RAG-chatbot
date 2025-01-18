@@ -78,13 +78,13 @@ function App() {
     setInput("");
   }
   
-  // a list of objects representing past chat threads (with keys `id` and `title`), from most to least recent
+  // a list of objects representing past chat threads (with keys `id` and `title` and `ragStatus`), from most to least recent.
   // this begins as `null`. via `useEffect`, as soon as the app is loaded we send a request to the server to get the chat history and then reset it.
   const [chatHistory, setChatHistory] = useState([])
 
   // this will run as soon as the component mounts.
   useEffect(() => {
-    // for silly reasons, one must _define_ an async function _inside_ of the `useEffect` callback, as is done here.
+    // for silly reasons, one must _define_ an async function _inside_ of the `useEffect` callback (so that's what's done here).
     async function getChatHistoryHere() {
       try {
         const chatHistory = await getChatHistory(TEMP_USER_ID)
