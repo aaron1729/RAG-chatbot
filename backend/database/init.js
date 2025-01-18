@@ -24,7 +24,8 @@ db.serialize(() => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         user_id INTEGER REFERENCES users(id),
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+        last_rag_timestamp DATETIME DEFAULT NULL
     )`);
     db.run(`CREATE TABLE IF NOT EXISTS messages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,9 +36,11 @@ db.serialize(() => {
         )`);
 });
 
+// close the database
 db.close(e => {
     if (e) {
         console.error("error closing database: " + e.message);
     }
     console.log("database connection closed.")
 })
+

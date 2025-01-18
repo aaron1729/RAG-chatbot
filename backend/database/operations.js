@@ -51,7 +51,7 @@ function deleteThread(threadId) {
 // since this is an async operation, return a promise, which hopefully resolves to the array of thread titles and ids for the given user id.
 function getThreads(userId) {
     return new Promise((resolve, reject) => {
-    db.all(`SELECT id, title FROM threads WHERE user_id = ?`, [userId], (e, rows) => {
+    db.all(`SELECT id, title, last_rag_timestamp FROM threads WHERE user_id = ?`, [userId], (e, rows) => {
         if (e) {
             return reject(e);
         }

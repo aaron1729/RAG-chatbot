@@ -103,8 +103,13 @@ app.post("/api/getChatHistory", async (req, res) => {
     const { userId } = req.body
     try {
         const threads = await getThreads(userId)
-        // console.log("the threads are...")
-        // threads.forEach(thread => {console.log(`thread id: ${thread.id}, title: ${thread.title}`)});
+        console.log("the threads are...")
+        threads.forEach(thread => {
+            // switch from snake case to camel case.
+            thread.lastRagTimestamp = thread.last_rag_timestamp;
+            delete thread.last_rag_timestamp;
+            console.log(`thread id: ${thread.id}, title: ${thread.title}, lastRagTimestamp: ${thread.lastRagTimestamp}`);
+        });
         res.json(threads)
     } catch (e) {
         console.error(`error getting chat history: ${e}`);
