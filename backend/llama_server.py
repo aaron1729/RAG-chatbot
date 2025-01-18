@@ -10,10 +10,6 @@ from fastapi import FastAPI, Body, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-# for the database
-import sqlite3
-db_connection = sqlite3.connect("")
-
 # llama index
 from llama_index.llms.openai import OpenAI
 from llama_index.core.base.llms.types import ChatMessage

@@ -18,6 +18,8 @@ PYTHON_SERVER_PORT=8000
 
 of course, install the various packages and dependencies. and run `backend/database/init.js` to initialize the sqlite database.
 
+for the python server, create a virtual environment by going to `backend/` and doing `python -m venv python_venv`; then, activate it using `source python_venv/bin/activate`. deactivate using `deactivate`.
+
 ---
 
 **to do (in order)**
