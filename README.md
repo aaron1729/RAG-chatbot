@@ -44,7 +44,6 @@ run `backend/database/init.js` to initialize the sqlite database.
     - [x] track which threads are unragged or have been updated since last getting ragged.
     - [x] update the index.
     - [ ] toggle "RAG chat" on and off.
-- [ ] make a rag chat engine that references previous threads when responding.
 - [ ] enable streaming responses.
 - [ ] host on a server!
 
