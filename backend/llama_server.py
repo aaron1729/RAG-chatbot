@@ -11,14 +11,14 @@ from fastapi import FastAPI, Body, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-from database.operations import get_threads, get_messages
+
+# from database.operations import get_threads, get_messages
 
 
 # llama index
 from llama_index.llms.openai import OpenAI
 from llama_index.core.base.llms.types import ChatMessage
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
-from llama_index.core import Document
+
 
 llm = OpenAI(temperature=1, model="gpt-3.5-turbo", max_tokens=256)
 

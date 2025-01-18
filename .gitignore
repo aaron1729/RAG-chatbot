@@ -41,4 +41,3 @@ frontend/.env
 .eslintrc.json
 .prettierrc
 eslint.config.js
-
