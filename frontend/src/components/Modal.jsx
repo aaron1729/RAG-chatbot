@@ -1,10 +1,28 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { sendNewThreadName, deleteChatThread } from '../services/requests';
 
 function Modal({ setIsOpen, type, params }) {
     
     console.log("modal component fired")
+
+    const [modalInput, setModalInput] = useState("")
+
+    const handleInputChange = (event) => {
+        if (event.target.id === 'modal-input') {
+            setModalInput(event.target.value);
+            console.log("modal input changed");
+        }
+    }
+    
+    useEffect(() => {
+        // add event listener for input changes
+        window.addEventListener('input', handleInputChange);
+        // cleanup function to remove event listener
+        return () => {
+            window.removeEventListener('input', handleInputChange);
+        };
+    }, []); // empty dependency array to run once on mount
 
     // close modal if "esc" key is pressed
     const handleKeyDown = (event) => {
@@ -71,7 +89,10 @@ function Modal({ setIsOpen, type, params }) {
     }
 
     return (
-        <div className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50`}>
+        <div
+            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+            onClick={(e) => e.stopPropagation()}
+        >
             <div className="bg-white p-6 rounded-lg shadow-lg">
                 <h2
                     className="text-lg font-semibold"
@@ -89,15 +110,22 @@ function Modal({ setIsOpen, type, params }) {
             <div className="mt-4 flex justify-end space-x-4">
                 {/* CANCEL button */}
                 <button
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        params.setIsDropdownOpen(false);
+                        setIsOpen(false);
+                    }}
                     className="px-4 py-2 bg-gray-200 rounded text-gray-600"
                 >
                     cancel
                 </button>
                 {/* SUBMIT button */}
                 <button
-                    onClick={modalProperties.handleSubmit}
-                    className="px-4 py-2 bg-blue-500 rounded text-white"
+                    // make this clickable only if:
+                        // there is no text input field; or
+                        // there is a text input field, and there is non-whitespace input.
+                    onClick={(!modalProperties.hasTextInput) || (modalProperties.hasTextInput && modalInput.trim()) ? modalProperties.handleSubmit : undefined}
+                    className={`px-4 py-2 ${modalProperties.hasTextInput && !modalInput.trim() ? 'bg-blue-200' : 'bg-blue-500'} rounded text-white`}
                 >
                     {modalProperties.submitButtonName}
                 </button>
