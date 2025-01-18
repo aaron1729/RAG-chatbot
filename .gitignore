@@ -1,5 +1,8 @@
 # specifics
-backend/chats.db
+backend/database/chats.db
+# ignore all directories inside backend/indices, but keep the files
+backend/indices/**/
+
 
 # logs
 logs
@@ -13,12 +16,13 @@ lerna-debug.log*
 **/node_modules/
 
 backend/python_venv/
+**/__pycache__/**
 
 dist
 dist-ssr
 *.local
 
-# environment variables
+# environment variables (but not those in the root folder)
 backend/.env
 frontend/.env
 
@@ -38,5 +42,3 @@ frontend/.env
 .prettierrc
 eslint.config.js
 
-
-**/__pycache__/**
