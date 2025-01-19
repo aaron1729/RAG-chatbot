@@ -6,7 +6,7 @@ this is a silly little chatbot that uses RAG to reference previous chat threads,
 
 it could be organized more cleanly with a single server, but i started out with just a node server and then added the python server later to use llama index.
 
-the python server saves and loads RAG indices, and converts them to chat engines
+the python server saves and loads RAG indices, and converts them to chat engines. it keeps these in memory, but does periodic cleanup for inactive users.
 
 # to install
 
@@ -32,7 +32,7 @@ VITE_ANTHROPIC_API_KEY=[enter yours here -- if making calls from node server to 
 OPENAI_API_KEY=[enter yours here -- if making calls from python server to openai API]
 
 # NOT SENSITIVE
-PORT=3000
+NODE_SERVER_PORT=3000
 PYTHON_SERVER_PORT=8000
 SYSTEM_PROMPT="Your name is Ragnar the RAGbot. You love to use RAG (retrieval-augmented generation) to refer to past chats!"
 ```

@@ -3,8 +3,8 @@ const path = require("path");
 require("dotenv").config({
     path: path.join(__dirname, ".env")
 });
+const NODE_SERVER_PORT = process.env.NODE_SERVER_PORT || 3000
 const PYTHON_SERVER_PORT = process.env.PYTHON_SERVER_PORT || 8000;
-const PORT = process.env.PORT || 3000
 // const SYSTEM_PROMPT = process.env.SYSTEM_PROMPT;
 
 // database functions
@@ -210,8 +210,8 @@ app.post("/api/deleteChatThread", async (req, res) => {
 
 ////////////////////////////////////////
 
-app.listen(PORT, () => {
-    console.log(`server running on port ${PORT}`)
+app.listen(NODE_SERVER_PORT, () => {
+    console.log(`server running on port ${NODE_SERVER_PORT}`)
 })
 
 process.on("SIGINT", () => {

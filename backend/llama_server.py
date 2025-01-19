@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 # this implicitly loads the openai API key from the `backend/.env` file.
 load_dotenv()
 # the second argument is the fallback value
-PORT = int(os.environ.get("PYTHON_SERVER_PORT", 8000))
+PYTHON_SERVER_PORT = int(os.environ.get("PYTHON_SERVER_PORT", 8000))
 SYSTEM_PROMPT = os.environ.get("SYSTEM_PROMPT")
 
 # for the fastapi/uvicorn server
@@ -19,7 +19,7 @@ import uvicorn
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[f"http://localhost:{os.environ.get("PORT")}"], # only allow requests from the node server
+    allow_origins=[f"http://localhost:{os.environ.get("PYTHON_SERVER_PORT")}"], # only allow requests from the node server
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -161,7 +161,7 @@ async def index_chats_llama_server(user_id: int = Body(...)):
 ##################################################
 
 # COMMENT THIS OUT FOR TESTING
-uvicorn.run(app, host="0.0.0.0", port=PORT)
+uvicorn.run(app, host="0.0.0.0", port=PYTHON_SERVER_PORT)
 
 ##################################################
 
