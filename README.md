@@ -38,14 +38,16 @@ run `backend/database/init.js` to initialize the sqlite database. use one-time-o
 - [x] add a "new chat" button to the header.
 - [x] allow user to change the title of the thread using the `updateThread` function.
 - [x] reroute chat functionality through llama server.
-- [ ] allow rag and re-rag of threads.
+- [x] allow rag and re-rag of threads.
   - [x] do this on the server side.
-  - [ ] enable the user to do this, i.e.:
+  - [x] enable the user to do this, i.e.:
     - [x] track which threads are unragged or have been updated since last getting ragged.
     - [x] update the index.
-    - [ ] toggle "RAG chat" on and off.
+    - [x] toggle "RAG chat" on and off.
+    - [x] chat with chats!
 - [ ] enable streaming responses.
 - [ ] host on a server!
+- [ ] add functionality for multiple users
 
 ---
 
@@ -55,5 +57,5 @@ run `backend/database/init.js` to initialize the sqlite database. use one-time-o
 - [ ] keep track of the input in other previous threads, so that when the user returns to it it's still there.
 - [ ] add oauth login, perhaps with a cookie to persist between sessions.
 - [ ] allow uploading docs and adding them to the index.
-- [ ] if saving these on the server (instead of e.g. an S3 bucket), maybe add a listener to delete the data if it's associated to a past chat -- or a sufficiently old chat, or if there's too much data.
+- [ ] add a scheduler to delete data if it's associated to a past chat -- or a sufficiently old chat, or if there's too much data.
 - [ ] add a button in sidebar to close it. and when it's closed, keep a button in the top-left to open it. this should override the disappearance coming from shrinking the window to be too narrow.
