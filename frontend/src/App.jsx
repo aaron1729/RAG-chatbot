@@ -18,16 +18,8 @@ function App() {
   const initialMessage = {role: "assistant", content: "Hello there! How can I help you today?"}
   
   // messages for the current thread
-  const [messages, setMessagesOriginal] = useState([initialMessage]);
+  const [messages, setMessages] = useState([initialMessage]);
   
-  // Wrap setMessages to track all calls
-  const setMessages = (newMessages) => {
-    console.log("=== setMessages called ===");
-    console.log("Stack trace:", new Error().stack);
-    console.log("New messages:", newMessages);
-    setMessagesOriginal(newMessages);
-  }
-
   useEffect(() => {
     console.log(`messages.length is ${messages.length}`)
   }, [messages])

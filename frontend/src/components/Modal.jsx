@@ -4,14 +4,14 @@ import { sendNewThreadName, deleteChatThread } from '../services/requests';
 
 function Modal({ setIsOpen, type, params }) {
     
-    console.log("modal component fired")
+    // console.log("modal component fired")
 
     const [modalInput, setModalInput] = useState("")
 
     const handleInputChange = (event) => {
         if (event.target.id === "modal-input") {
             setModalInput(event.target.value);
-            console.log("modal input changed");
+            // console.log("modal input changed");
         }
     }
     
