@@ -45,8 +45,15 @@ async def read_root():
     return {"status": "llama server is running!"}
 
 @app.post("/chat")
-async def chat_llama_server(messages: list = Body(...)):
+async def chat_llama_server(body: dict = Body(...)):
     print("received a post request to the `/chat` endpoint")
+    
+    messages = body["messages"]
+    user_id = body["userId"]
+    rag_chat = body["ragChat"]
+
+    print(f"{user_id = } and {rag_chat = }")
+    
     
     system_message = ChatMessage(role="system", content=SYSTEM_PROMPT)
 

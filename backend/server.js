@@ -59,7 +59,7 @@ app.post("/api/chat", async (req, res) => {
         const response = await fetch(`http://localhost:${PYTHON_SERVER_PORT}/chat`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(messages)
+            body: JSON.stringify({messages, userId, ragChat})
         })
         // `response` has only non-enumerable properties, so this doesn't show anything.
         // console.log(`response: ${JSON.stringify(response)}`)
