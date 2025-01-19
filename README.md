@@ -1,6 +1,8 @@
-a silly little chatbot that uses RAG to reference previous chat threads.
+this is a silly little chatbot that uses RAG to reference previous chat threads, so that you can "chat with your chats"! it's built using react + vite with a sqlite database, using llama index for RAG.
 
-built using react + vite with a sqlite database, and llama index for RAG.
+schematically, it's organized as follows.
+
+![RAG Chatbot Schematic](assets/RAG-chatbot-schematic.png)
 
 react+vite app on port 5173 (vite's default).
 
@@ -47,7 +49,7 @@ run `backend/database/init.js` to initialize the sqlite database. use one-time-o
     - [x] chat with chats!
 - [ ] enable streaming responses.
 - [ ] host on a server!
-- [ ] add functionality for multiple users
+- [ ] add functionality for multiple users. (for starters, just enter a username when you arrive.)
 
 ---
 
