@@ -6,28 +6,30 @@ this is a silly little chatbot that uses RAG to reference previous chat threads,
 
 it could be organized more cleanly with a single server, but i started out with just a node server and then added the python server later to use llama index.
 
-# installation
+the python server saves and loads RAG indices, and converts them to chat engines
+
+# to install
 
 ## node
 
-note that there are `package.json` files in `/`, `frontend/`, and `backend/`. run `npm ci` in all three of these folders to download the appropriate node modules.
+use node v23.x and npm. note that there are `package.json` files in `/`, `frontend/`, and `backend/`. run `npm ci` in all three of these folders to download the appropriate node modules.
 
 ## python
 
-create a virtual environment: in `backend/`, do `python -m venv python_venv`. therein, this can be activated using `source python_venv/bin/activate`. this can be deactivated (anywhere) using `deactivate`. after activating, install the dependencies using `pip install -r requirements.txt` in `backend/`.
+use python v3.12 or higher and the latest version of pip (to be set up with the virtual environment). be sure to exit any conda environments (using `conda deactivate`). create a virtual environment: in `backend/`, do `python -m venv python_venv`. therein, this can be activated using `source python_venv/bin/activate`. this can be deactivated (anywhere) using `deactivate`. after activating, install the dependencies using `pip install -r requirements.txt` in `backend/`.
 
 ## database
 
 inside of `backend/database/`, run `node init.js` to initialize the sqlite database. use `one-time-operations.js` therein for one-off database operations.
 
-# API keys
+## API keys
 
 this uses a `.env` file in the root, with _no_ sensitive content (so it's present in the repo). it also uses a `backend/.env` file, which should look like:
 
 ```
 # SENSITIVE
-VITE_ANTHROPIC_API_KEY=[enter yours here, if needed]
-OPENAI_API_KEY=[enter yours here, if needed]
+VITE_ANTHROPIC_API_KEY=[enter yours here -- if making calls from node server to anthropic API]
+OPENAI_API_KEY=[enter yours here -- if making calls from python server to openai API]
 
 # NOT SENSITIVE
 PORT=3000
@@ -37,7 +39,7 @@ SYSTEM_PROMPT="Your name is Ragnar the RAGbot. You love to use RAG (retrieval-au
 
 # to run
 
-simultaneously run the frontend and node server by running `npm run dev` in `/`. start the python server by running `python llama_server.py` in `backend/`.
+simultaneously run the frontend and node server by running `npm run dev` in `/`. in a different terminal, start the python server by running `python llama_server.py` in `backend/` (with the virtual environment activated).
 
 the react+vite app is served on port 5173 (vite's default).
 

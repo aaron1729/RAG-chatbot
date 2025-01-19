@@ -1,3 +1,7 @@
+// for now this is hard-coded. this occurs here and in `App.jsx`.
+// whenever actually handling it, be sure to handle the logic for adding a new user, and of course ensure that getUserInfo here never returns an empty value.
+const TEMP_USER_ID = 4
+
 const sqlite3 = require('sqlite3').verbose();
 
 const db = new sqlite3.Database('chats.db', (e) => {
@@ -35,6 +39,15 @@ db.serialize(() => {
         role TEXT CHECK(role IN ('user', 'assistant')) NOT NULL,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);
+});
+
+// insert a test user into the users table
+db.run(`INSERT INTO users (id, username, email, has_rag_index) VALUES (${TEMP_USER_ID}, "john", "johndoe@gmail.com", FALSE)`, (e) => {
+    if (e) {
+        console.error("error inserting test user: " + e.message);
+    } else {
+        console.log("test user inserted: john");
+    }
 });
 
 // close the database

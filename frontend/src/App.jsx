@@ -8,7 +8,7 @@ import { sendMessage, getChatHistory, getUserInfo, indexChats } from './services
 
 
 
-// for now this is hard-coded. this is the only place where it occurs.
+// for now this is hard-coded. this occurs here and in `backend/database/init.js`.
 // whenever actually handling it, be sure to handle the logic for adding a new user, and of course ensure that getUserInfo here never returns an empty value.
 const TEMP_USER_ID = 4
 
