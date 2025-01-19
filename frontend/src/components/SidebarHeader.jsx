@@ -32,8 +32,6 @@ function SidebarHeader({ startNewChat, currentThreadId, hasRagIndex, handleIndex
                 className={`rounded px-2 py-0.5 flex items-center border-2 ${hasRagIndex ? 'hover:bg-fuchsia-400 border-fuchsia-400' : 'text-gray-300 border-white'} whitespace-nowrap`}
                 onClick={() => {
                     setRagChat(!ragChat);
-                    console.log("'chat with chats' button clicked");
-
                 }}
                 >
                     <PackageSearch

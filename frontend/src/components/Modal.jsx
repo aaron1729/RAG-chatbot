@@ -37,24 +37,24 @@ function Modal({ setIsOpen, type, params }) {
         };
     }, []);
 
-    // AI-GENERATED: handle modal submission attempt
     const handleModalSubmissionAttempt = (e) => {
-        e.stopPropagation(); // AI-GENERATED: prevent event bubbling
+        e.stopPropagation();
         if ((!modalProperties.hasTextInput) || (modalProperties.hasTextInput && modalInput.trim())) {
-            modalProperties.handleSubmit(e); // AI-GENERATED: call the handleSubmit function
+            modalProperties.handleSubmit(e);
         }
     };
 
-    // AI-GENERATED: close modal if "enter" key is pressed
     const handleKeyDown = (event) => {
         if (event.key === "Escape") {
             console.log("'Esc' key pressed when modal open");
             params.setShowOptionsButton(false);
             params.setIsDropdownOpen(false);
             setIsOpen(false);
-        } else if (event.key === "Enter") { // AI-GENERATED: check for enter key
-            handleModalSubmissionAttempt(event); // AI-GENERATED: call submission attempt function
         }
+        // else if (event.key === "Enter") {
+            // event.preventDefault(); // to prevent any bubbling-up behavior.
+            // handleModalSubmissionAttempt(event);
+        // }
     };
     window.addEventListener('keydown', handleKeyDown);
 
@@ -85,12 +85,11 @@ function Modal({ setIsOpen, type, params }) {
     }
 
     if (type === "delete-thread") {
-        modalProperties.title = "really delete thread?"
+        modalProperties.title = "really delete thread?";
         modalProperties.hasTextInput = false;
         modalProperties.submitButtonName = "delete";
         modalProperties.handleSubmit = async (e) => {
-            console.log("=== DELETE THREAD MODAL ===");
-            console.log("Starting delete process for threadId:", params.threadId);
+            console.log("handleSubmit for 'delete-thread modal");
             e.stopPropagation();
             try {
                 // Close everything first to prevent any click events

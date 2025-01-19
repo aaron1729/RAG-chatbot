@@ -14,13 +14,13 @@ const db = new sqlite3.Database('chats.db', (e) => {
 
 
 // AI-GENERATED: querying all threads associated with user id 4 and logging their titles
-db.all("SELECT title FROM threads WHERE user_id = ?", [4], (err, rows) => {
+db.all("SELECT id, title FROM threads WHERE user_id = ?", [4], (err, rows) => {
     if (err) {
         console.error("error retrieving threads:", err.message);
         return;
     }
     rows.forEach(row => {
-        console.log(`thread title: ${row.title}`);
+        console.log(`thread with id ${row.id} has title: ${row.title}`);
     });
 });
 

@@ -15,10 +15,10 @@ function Sidebar({ chatHistory, renameOrRemoveThread, currentThreadId, setCurren
         )
     }, [chatHistory])
 
-    useEffect(() => {
-        // for debugging
-        console.log(`allRagStatusesUpToDate is: ${allRagStatusesUpToDate}`)
-    }, [allRagStatusesUpToDate])
+    // useEffect(() => {
+    //     // for debugging
+    //     console.log(`allRagStatusesUpToDate is: ${allRagStatusesUpToDate}`)
+    // }, [allRagStatusesUpToDate])
     
     return (
         
