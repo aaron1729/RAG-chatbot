@@ -31,7 +31,7 @@ scheduler = BackgroundScheduler()
 
 # operations
 from database.operations import update_rag_status_all_threads
-from indices.operations import index_chats
+from indices.operations import index_chats, load_index
 
 # llama index
 from llama_index.llms.openai import OpenAI
@@ -42,18 +42,11 @@ llm = OpenAI(temperature=1, model="gpt-3.5-turbo", max_tokens=256)
 
 # SERVER STATE
 
-# all times are measured in seconds.
+# all times are measured in seconds, so write `N * 60` for `N` minutes.
 
-# keys are user ids, values are dicts with keys "id" and "index". these get cleaned up periodically.
-user_data = {
-    5: {
-        "last_active": time.time() - 2 * 60,
-    },
-    7: {
-        "last_active": time.time() - 7 * 60
-    }
-}
-INACTIVITY_TIMEOUT = 180
+# keys are user ids, values are dicts with keys "last_active" and "index_as_chat_engine". these get cleaned up periodically.
+user_data = {}
+INACTIVITY_TIMEOUT = 5 * 60
 
 def remove_inactive_users():
     print("running `remove_inactive_users`")
@@ -67,9 +60,9 @@ def remove_inactive_users():
         del user_data[user_id]
         print(f"removing inactive user {user_id}")
 
-scheduler.add_job(remove_inactive_users, trigger="interval", seconds=10)
+# run the function every 1 minutes.
+scheduler.add_job(remove_inactive_users, trigger="interval", minutes=1)
 scheduler.start()
-
 
 ##############################
 
@@ -89,20 +82,57 @@ async def chat_llama_server(body: dict = Body(...)):
     rag_chat = body["ragChat"]
 
     print(f"{user_id = } and {rag_chat = }")
-    
+
+    if user_id in user_data:
+        user_data[user_id]["last_active"] = time.time()
     
     system_message = ChatMessage(role="system", content=SYSTEM_PROMPT)
 
     # for debugging, default to empty string in case `message["content"]` doesn't exist (though in practice it always should).
     formatted_messages = [system_message] + [ChatMessage(role=message["role"], content=message.get("content", "")) for message in messages]
 
-    try:
-        response = llm.chat(formatted_messages).message.blocks[0].text
-        print("response:", response)
-        return {"response": response}
-    except Exception as e:
-        print("in the `except` block")
-        raise HTTPException(status_code=500, detail=str(e))
+    if rag_chat:
+        try:
+            print("in the `try` block for rag_chat = True")
+            if user_id in user_data:
+                print("the user's chat engine is already in memory")
+                chat_engine = user_data[user_id]["index_as_chat_engine"]
+            else:
+                print(f"loading the index from storage for {user_id=}...")
+                index = load_index(user_id)
+                print("turning the index into a chat engine...")
+                # possible kwargs:
+                    # llm=llm
+                    # chat_mode="best" or "condense_plus_context" or...
+                    # context_prompt [maybe replacing system message above??!?]
+                chat_engine = index.as_chat_engine()
+                print("made the chat engine")
+                user_data[user_id] = {
+                    "last_active": time.time(),
+                    "index_as_chat_engine": chat_engine
+                }
+            print("now getting a response...")
+            response = chat_engine.chat(
+                message=formatted_messages[-1].content,
+                chat_history=formatted_messages[:-1]
+            )
+            # this is an object, with attributes: response, sources, source_nodes, metadata
+            response_text = response.response
+            print(f"{response_text = }")
+            return {"response": response_text}
+        except Exception as e:
+            print("in the `except` block for rag chat")
+            return
+    else:
+        try:
+            response = llm.chat(formatted_messages).message.blocks[0].text
+            print("response:", response)
+            return {"response": response}
+        except Exception as e:
+            print("in the `except` block for non-rag chat")
+            raise HTTPException(status_code=500, detail=str(e))
+            
+            
 
 
 # this endpoint shouldn't just be called `/index`, since that could clash with other default behavior (like getting `index.html`).
@@ -112,15 +142,14 @@ async def index_chats_llama_server(user_id: int = Body(...)):
     try:
         index_chats(user_id)
         print(f"indexed chats for user {user_id}")
-
+        try:
+            update_rag_status_all_threads(user_id, "UP_TO_DATE")
+            return True
+        except:
+            print("in the `exception` block: failed to set rag statuses of threads")
+            raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
         print("in the `except` block: failed to index chats")
-        raise HTTPException(status_code=500, detail=str(e))
-    try:
-        update_rag_status_all_threads(user_id, "UP_TO_DATE")
-        return True
-    except:
-        print("in the `exception` block: failed to set rag statuses of threads")
         raise HTTPException(status_code=500, detail=str(e))
 
 

@@ -65,6 +65,7 @@ app.post("/api/chat", async (req, res) => {
         // console.log(`response: ${JSON.stringify(response)}`)
         const data = await response.json();
         console.log(`data: ${JSON.stringify(data)}`);
+        console.log("keys:", Object.keys(data));
         const responseText = data.response;
         
         

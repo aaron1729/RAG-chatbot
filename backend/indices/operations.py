@@ -12,6 +12,9 @@ from datetime import datetime
 
 from backend.database.operations import get_threads, get_messages, get_thread_info, get_all_messages, get_all_threads
 
+def get_persist_dir(user_id):
+    return str(Path(__file__).parent / str(user_id))
+
 def index_chats(user_id):
     messages = get_all_messages(user_id)
     threads = get_all_threads(user_id)
@@ -43,10 +46,11 @@ def index_chats(user_id):
     documents = [thread_dict_to_document(thread_id, thread_dict) for thread_id, thread_dict in threads_dict.items()]
     index = VectorStoreIndex.from_documents(documents)
     print(f"made an index where {user_id = }")
-    index.storage_context.persist(persist_dir=str(Path(__file__).parent / str(user_id)))
+    index.storage_context.persist(persist_dir=get_persist_dir(user_id))
     return index
 
-
+def load_index(user_id):
+    return load_index_from_storage(StorageContext.from_defaults(persist_dir=get_persist_dir(user_id)))
 
 ######################################################
 
