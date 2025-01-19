@@ -34,13 +34,13 @@ function App() {
   //   }
   // }, [input])
 
-  // has RAG index.
-  // HARD-CODED TO TRUE FOR THE MOMENT, to be changed shortly. it's based on the user id.
+  // depending on the user; set in a useEffect with empty dependency array after component is mounted.
   const [hasRagIndex, setHasRagIndex] = useState(null);
 
-  useEffect(() => {
-    console.log(`hasRagIndex is now: ${hasRagIndex}`)
-  }, [hasRagIndex])
+  // useEffect(() => {
+  //   // for debugging
+  //   console.log(`hasRagIndex is now: ${hasRagIndex}`)
+  // }, [hasRagIndex])
   
   // whether we're currently getting a chat response
   const [isLoading, setIsLoading] = useState(false);
@@ -97,7 +97,7 @@ function App() {
     async function getUserInfoHere() {
       try {
         const userInfo = await getUserInfo(TEMP_USER_ID)
-        console.log(`inside of App, got userInfo and it is: ${JSON.stringify(userInfo)}`)
+        // console.log(`inside of App, got userInfo and it is: ${JSON.stringify(userInfo)}`)
 
         // userInfo.hasRagIndex comes back as 0 or 1, but be explicit about the boolean here.
         if (userInfo.hasRagIndex) {
