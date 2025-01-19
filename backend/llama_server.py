@@ -1,4 +1,5 @@
 import os
+import time
 
 import sys
 from pathlib import Path
@@ -12,23 +13,10 @@ PORT = int(os.environ.get("PYTHON_SERVER_PORT", 8000))
 SYSTEM_PROMPT = os.environ.get("SYSTEM_PROMPT")
 
 # for the fastapi/uvicorn server
-from fastapi import FastAPI, Body, HTTPException
+from fastapi import FastAPI, Body, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-
-# operations
-from database.operations import update_rag_status_all_threads
-from indices.operations import index_chats
-
-# llama index
-from llama_index.llms.openai import OpenAI
-from llama_index.core.base.llms.types import ChatMessage
-
-
-llm = OpenAI(temperature=1, model="gpt-3.5-turbo", max_tokens=256)
-
 app = FastAPI()
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[f"http://localhost:{os.environ.get("PORT")}"], # only allow requests from the node server
@@ -37,7 +25,55 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# for scheduling periodic deletion of data for inactive users
+from apscheduler.schedulers.background import BackgroundScheduler
+scheduler = BackgroundScheduler()
+
+# operations
+from database.operations import update_rag_status_all_threads
+from indices.operations import index_chats
+
+# llama index
+from llama_index.llms.openai import OpenAI
+from llama_index.core.base.llms.types import ChatMessage
+llm = OpenAI(temperature=1, model="gpt-3.5-turbo", max_tokens=256)
+
 ##############################
+
+# SERVER STATE
+
+# all times are measured in seconds.
+
+# keys are user ids, values are dicts with keys "id" and "index". these get cleaned up periodically.
+user_data = {
+    5: {
+        "last_active": time.time() - 2 * 60,
+    },
+    7: {
+        "last_active": time.time() - 7 * 60
+    }
+}
+INACTIVITY_TIMEOUT = 180
+
+def remove_inactive_users():
+    print("running `remove_inactive_users`")
+    if not user_data:
+        print("`user_data` is empty, so quitting early")
+        return
+    current_time = time.time()
+    inactive_users = [user_id for user_id, data in user_data.items() if current_time - data["last_active"] > INACTIVITY_TIMEOUT]  # ai-generated: get user ids for inactive users based on last active time
+    print(f"removing the inactive users from state: {inactive_users = }")
+    for user_id in inactive_users:
+        del user_data[user_id]
+        print(f"removing inactive user {user_id}")
+
+scheduler.add_job(remove_inactive_users, trigger="interval", seconds=10)
+scheduler.start()
+
+
+##############################
+
+# ENDPOINT HANDLERS
 
 # this is just for convenience: to test if the server is running, point the browser to `http://localhost:8000` (or `http://0.0.0.0:8000`).
 @app.get("/")
