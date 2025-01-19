@@ -1,12 +1,10 @@
 # overview
 
-this is a silly little chatbot that uses RAG to reference previous chat threads, so that you can "chat with your chats"! it's built using react + vite with a sqlite database, using a python server running llama index for RAG.
-
-schematically, it's organized as follows.
+this is a silly little chatbot that uses RAG to reference previous chat threads, so that you can "chat with your chats"! it's built using react + vite with a sqlite database, using a python server running llama index for RAG. schematically, these components are organized as follows.
 
 ![RAG Chatbot Schematic](assets/RAG-chatbot-schematic.png)
 
-it could be organized more cleanly with a single server, but i started out with just node and then added python for llama index.
+it could be organized more cleanly with a single server, but i started out with just a node server and then added the python server later to use llama index.
 
 # installation
 
@@ -16,7 +14,7 @@ note that there are `package.json` files in `/`, `frontend/`, and `backend/`. ru
 
 ## python
 
-create a virtual environment: in `backend/`, do `python -m venv python_venv`. therein, this can be activated using `source python_venv/bin/activate` and deactivated using `deactivate`. after activating, install the dependencies using `pip install -r requirements.txt`.
+create a virtual environment: in `backend/`, do `python -m venv python_venv`. therein, this can be activated using `source python_venv/bin/activate`. this can be deactivated (anywhere) using `deactivate`. after activating, install the dependencies using `pip install -r requirements.txt` in `backend/`.
 
 ## database
 
