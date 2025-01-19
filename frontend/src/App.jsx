@@ -34,13 +34,21 @@ function App() {
   //   }
   // }, [input])
 
-  // depending on the user; set in a useEffect with empty dependency array after component is mounted.
+  // a boolean, depending on the user; this is set in a useEffect with empty dependency array after component is mounted.
   const [hasRagIndex, setHasRagIndex] = useState(null);
 
   // useEffect(() => {
   //   // for debugging
   //   console.log(`hasRagIndex is now: ${hasRagIndex}`)
   // }, [hasRagIndex])
+  
+  // a boolean that the user can toggle (once they have a rag index).
+  const [ragChat, setRagChat] = useState(false);
+
+  useEffect(() => {
+    // for debugging
+    console.log(`ragChat is now ${ragChat}`)
+  }, [ragChat])
   
   // whether we're currently getting a chat response
   const [isLoading, setIsLoading] = useState(false);
@@ -194,6 +202,8 @@ function App() {
         startNewChat={startNewChat}
         hasRagIndex={hasRagIndex}
         handleIndexChatsSubmit={handleIndexChatsSubmit}
+        ragChat={ragChat}
+        setRagChat={setRagChat}
       />
       <div className="flex flex-col flex-1">
         <MessageWindow messages={messages} />

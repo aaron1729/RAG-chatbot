@@ -54,6 +54,6 @@ run `backend/database/init.js` to initialize the sqlite database. use one-time-o
 - [ ] bound the length of a new thread title. (maybe allow a longer description, separately?)
 - [ ] keep track of the input in other previous threads, so that when the user returns to it it's still there.
 - [ ] add oauth login, perhaps with a cookie to persist between sessions.
-- [ ] allow uploading docs, maybe with a pop-up modal.
+- [ ] allow uploading docs and adding them to the index.
 - [ ] if saving these on the server (instead of e.g. an S3 bucket), maybe add a listener to delete the data if it's associated to a past chat -- or a sufficiently old chat, or if there's too much data.
 - [ ] add a button in sidebar to close it. and when it's closed, keep a button in the top-left to open it. this should override the disappearance coming from shrinking the window to be too narrow.

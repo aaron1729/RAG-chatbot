@@ -4,7 +4,7 @@ import ChatHistory from "./ChatHistory";
 import PropTypes from 'prop-types';
 
 // the props `chatHistory` is a list of `chatThread` objects (each with keys `id` and `title` and and `ragStatus`).
-function Sidebar({ chatHistory, renameOrRemoveThread, currentThreadId, setCurrentThreadId, setMessages, startNewChat, hasRagIndex, handleIndexChatsSubmit }) {
+function Sidebar({ chatHistory, renameOrRemoveThread, currentThreadId, setCurrentThreadId, setMessages, startNewChat, hasRagIndex, handleIndexChatsSubmit, ragChat, setRagChat }) {
     
     // start this as `true`, so that the button starts out disabled.
     const [allRagStatusesUpToDate, setAllRagStatusesUpToDate] = useState(true);
@@ -31,6 +31,8 @@ function Sidebar({ chatHistory, renameOrRemoveThread, currentThreadId, setCurren
                 hasRagIndex={hasRagIndex}
                 handleIndexChatsSubmit={handleIndexChatsSubmit}
                 allRagStatusesUpToDate={allRagStatusesUpToDate}
+                ragChat={ragChat}
+                setRagChat={setRagChat}
             />
             <ChatHistory
                 chatHistory={chatHistory}
@@ -52,6 +54,8 @@ Sidebar.propTypes = {
     startNewChat: PropTypes.func,
     hasRagIndex: PropTypes.bool,
     handleIndexChatsSubmit: PropTypes.func,
+    ragChat: PropTypes.bool,
+    setRagChat: PropTypes.func,
 }
 
 export default Sidebar
