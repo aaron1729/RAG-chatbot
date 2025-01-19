@@ -17,29 +17,32 @@ function SidebarHeader({ startNewChat, currentThreadId, hasRagIndex, handleIndex
                     <PlusCircleIcon
                         className={`h-4 w-4 ${currentThreadId ? '' : 'text-gray-300'}`}
                     />
-                    <span>&nbsp;new chat!</span>
+                    <span>&nbsp;&nbsp;new chat!</span>
                 </div>
                 <div
                     className={`rounded px-2 py-0.5 flex items-center border-2 ${allRagStatusesUpToDate ? 'text-gray-300 border-white' : 'hover:bg-orange-400 border-orange-400'} whitespace-nowrap`}
                     onClick={!allRagStatusesUpToDate ? handleIndexChatsSubmit : null}
                 >
                     <Boxes className="h-4 w-4" />
-                    <span>&nbsp;index chats!</span>
+                    <span>&nbsp;&nbsp;{hasRagIndex ? "re-" : ""}index chats!</span>
                 </div>
             </div>
             <div className="flex justify-center">
                 <div
                 className={`rounded px-2 py-0.5 flex items-center border-2 ${hasRagIndex ? 'hover:bg-fuchsia-400 border-fuchsia-400' : 'text-gray-300 border-white'} whitespace-nowrap`}
                 onClick={() => {
-                    setRagChat(!ragChat);
+                    if (hasRagIndex) {
+                        setRagChat(!ragChat);
+                    }
                 }}
                 >
                     <PackageSearch
                         className={`h-4 w-4 ${hasRagIndex ? '' : 'text-gray-300'}`}
                     />
-                    <span>&nbsp;chat with chats!&nbsp;</span>
+                    <span>&nbsp;&nbsp;chat with chats!&nbsp;&nbsp;</span>
                     <SlidingToggle
                         isOn={ragChat}
+                        isAvailable={hasRagIndex}
                     />
                 </div>
             </div>

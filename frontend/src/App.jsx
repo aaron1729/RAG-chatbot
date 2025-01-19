@@ -8,7 +8,7 @@ import { sendMessage, getChatHistory, getUserInfo, indexChats } from './services
 
 
 
-// for now this is hard-coded, here and in server.js.
+// for now this is hard-coded. this is the only place where it occurs.
 // whenever actually handling it, be sure to handle the logic for adding a new user, and of course ensure that getUserInfo here never returns an empty value.
 const TEMP_USER_ID = 4
 
@@ -20,10 +20,13 @@ function App() {
   // messages for the current thread
   const [messages, setMessages] = useState([initialMessage]);
   
-  useEffect(() => {
-    console.log(`messages.length is ${messages.length}`)
-  }, [messages])
+  // useEffect(() => {
+  //   // for debugging
+  //   console.log(`messages.length is ${messages.length}`)
+  // }, [messages])
 
+  const [userId, setUserId] = useState(TEMP_USER_ID)
+  
   // text input
   const [input, setInput] = useState("");
 
@@ -93,7 +96,7 @@ function App() {
     
     async function getChatHistoryHere() {
       try {
-        const chatHistory = await getChatHistory(TEMP_USER_ID)
+        const chatHistory = await getChatHistory(userId)
         setChatHistory(chatHistory.reverse())
       } catch (e) {
         console.error("error getting chat history:", e)
@@ -104,7 +107,7 @@ function App() {
     
     async function getUserInfoHere() {
       try {
-        const userInfo = await getUserInfo(TEMP_USER_ID)
+        const userInfo = await getUserInfo(userId)
         // console.log(`inside of App, got userInfo and it is: ${JSON.stringify(userInfo)}`)
 
         // userInfo.hasRagIndex comes back as 0 or 1, but be explicit about the boolean here.
@@ -150,7 +153,7 @@ function App() {
     setInput("")
     setIsLoading(true);
     try {
-      const data = await sendMessage(currentThreadId, newMessages)
+      const data = await sendMessage(userId, currentThreadId, ragChat, newMessages)
       if (!currentThreadId) {
         console.log(`changing currentThreadId from ${currentThreadId} to ${data.threadId}`)
         setCurrentThreadId(data.threadId)
@@ -179,13 +182,14 @@ function App() {
     console.log("inside of handleIndexChatsSubmit")
     e.preventDefault(); // to stop the browser from reloading the whole page
     try {
-      const data = await indexChats(TEMP_USER_ID);
+      const data = await indexChats(userId);
       console.log(`inside of handleIndexChatsSubmit, data is: ${data}`);
       const newChatHistory = chatHistory.map(chatThread => ({
           ...chatThread,
           ragStatus: "UP_TO_DATE"
       }));
       setChatHistory(newChatHistory);
+      setHasRagIndex(true);
     } catch (error) {
       console.log("error:", error)
     }

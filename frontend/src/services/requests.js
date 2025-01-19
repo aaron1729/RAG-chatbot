@@ -58,13 +58,13 @@ export async function getChatHistory(userId) {
     }
 }
 
-export async function sendMessage(threadId, messages) {
+export async function sendMessage(userId, threadId, ragChat, messages) {
     try {
         console.log("inside of the async function sendMessages (on the frontend)")
         const response = await fetch("/api/chat", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({threadId, messages})
+            body: JSON.stringify({userId, threadId, ragChat, messages})
         });
         if (!response.ok) {
             throw new Error("failed in sendMessage")

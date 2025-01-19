@@ -7,9 +7,6 @@ const PYTHON_SERVER_PORT = process.env.PYTHON_SERVER_PORT || 8000;
 const PORT = process.env.PORT || 3000
 // const SYSTEM_PROMPT = process.env.SYSTEM_PROMPT;
 
-// for now this is hard-coded, here and in App.jsx.
-const TEMP_USER_ID = 4
-
 // database functions
 const { updateUserInfo, getUserInfo, indexChats, insertThread, renameThread, deleteThread, getThreads, insertMessage, getMessages, closeDatabase, updateThreadRagStatus } = require("./database/operations.js");
 
@@ -38,21 +35,22 @@ app.post("/api/chat", async (req, res) => {
     try {
         console.log("inside of the `/api/chat` endpoint handler")
         
-        // if this is a new thread, get a new threadId and save the initial assistant message to the database.
-        const { messages } = req.body
+        const { userId, ragChat, messages } = req.body
         let { threadId } = req.body
+        
+        // if this is a new thread, get a new threadId and save the initial assistant message to the database.
         if (!threadId) {
             // the `'sv'` is for sweden's standards for formatting the date & time -- a convenient trick for getting "YYYY-MM-DD HH:MM:SS".
             const timestamp = new Date().toLocaleString('sv')
             console.log("timestamp is:", timestamp)
-            threadId = await insertThread(TEMP_USER_ID, `new thread at ${timestamp}`)
+            threadId = await insertThread(userId, `new thread at ${timestamp}`)
             console.log(`inside of \`/api/chat\` endpoint handler: just made a new thread, with threadId ${threadId}`)
             insertMessage(threadId, "assistant", messages[0].content)
         } else {
             updateThreadRagStatus(threadId, "NEEDS_UPDATE")
         }
         
-        // save the user message to the database.
+        // in any case, save the user message to the database.
         insertMessage(threadId, "user", messages[messages.length - 1].content)
         
         // get a response from the assistant. two ways (one commented-out):

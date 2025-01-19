@@ -74,13 +74,17 @@ function Modal({ setIsOpen, type, params }) {
         modalProperties.submitButtonName = "apply";
         modalProperties.handleSubmit = async (e) => {
             console.log("handleSubmit for 'rename-thread' modal");
-            e.stopPropagation();
-            const newThreadName = document.getElementById('modal-input').value;
-            await sendNewThreadName(params.threadId, newThreadName);
-            params.renameOrRemoveThread(params.threadId, newThreadName);
-            setIsOpen(false);
-            params.setShowOptionsButton(false);
-            params.setIsDropdownOpen(false);
+            try {    
+                e.stopPropagation();
+                const newThreadName = document.getElementById('modal-input').value;
+                await sendNewThreadName(params.threadId, newThreadName);
+                params.renameOrRemoveThread(params.threadId, newThreadName);
+                setIsOpen(false);
+                params.setShowOptionsButton(false);
+                params.setIsDropdownOpen(false);
+            } catch (error) {
+                console.error("error in the renaming process:", error)
+            }
         }
     }
 
@@ -99,9 +103,7 @@ function Modal({ setIsOpen, type, params }) {
                 
                 // Then do the deletion
                 await deleteChatThread(params.threadId);
-                console.log("Server delete successful");
                 params.renameOrRemoveThread(params.threadId);
-                console.log("Local state updates complete");
             } catch (error) {
                 console.error("Error in delete process:", error);
             }
