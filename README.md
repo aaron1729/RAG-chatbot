@@ -1,6 +1,6 @@
 a silly little chatbot that uses RAG to reference previous chat threads.
 
-built using react + vite, with a sqlite database.
+built using react + vite with a sqlite database, and llama index for RAG.
 
 react+vite app on port 5173 (vite's default).
 
@@ -8,7 +8,7 @@ node server on port 3000.
 
 python fastAPI server on port 8000.
 
-this project requires a `.env` file in the root, with _no_ sensitive content (so it's present in the repo). it also requires a `backend/.env`, which should look like:
+this uses a `.env` file in the root, with _no_ sensitive content (so it's present in the repo). it also uses a `backend/.env` file, which should look like:
 
 ```
 # SENSITIVE
@@ -18,14 +18,14 @@ OPENAI_API_KEY=[enter yours here, if needed]
 # NOT SENSITIVE
 PORT=3000
 PYTHON_SERVER_PORT=8000
-SYSTEM_PROMPT="Your name is Ragnar the RAGbot. You love to use RAG (retrieval-augmented generation) to help users read their documents!"
+SYSTEM_PROMPT="Your name is Ragnar the RAGbot. You love to use RAG (retrieval-augmented generation) to refer to past chats!"
 ```
 
 of course, install the various packages and dependencies.
 
 for the python server, create a virtual environment by going to `backend/` and doing `python -m venv python_venv`; then, activate it using `source python_venv/bin/activate`. deactivate using `deactivate`.
 
-run `backend/database/init.js` to initialize the sqlite database.
+run `backend/database/init.js` to initialize the sqlite database. use one-time-operations.js for one-off database operations.
 
 ---
 
