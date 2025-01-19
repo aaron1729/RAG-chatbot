@@ -12,11 +12,11 @@ the python server saves and loads RAG indices, and converts them to chat engines
 
 ## node
 
-use node v23.x and npm. note that there are `package.json` files in `/`, `frontend/`, and `backend/`. run `npm ci` in all three of these folders to download the appropriate node modules.
+use node v23.x and npm (included with node.js). note that there are `package.json` files in `/`, `frontend/`, and `backend/`. run `npm ci` in all three of these folders to download the appropriate node modules.
 
 ## python
 
-use python v3.12 or higher and the latest version of pip (to be set up with the virtual environment). be sure to exit any conda environments (using `conda deactivate`). create a virtual environment: in `backend/`, do `python -m venv python_venv`. therein, this can be activated using `source python_venv/bin/activate`. this can be deactivated (anywhere) using `deactivate`. after activating, install the dependencies using `pip install -r requirements.txt` in `backend/`.
+use python v3.12 (v3.13 is unstable). be sure to exit any conda environments (using `conda deactivate`). create a virtual environment: in `backend/`, do `python3.12 -m venv python_venv`. therein, this can be activated using `source python_venv/bin/activate`. this can be deactivated (anywhere) using `deactivate`. after activating, install the dependencies using `pip install -r requirements.txt` in `backend/`.
 
 ## database
 
