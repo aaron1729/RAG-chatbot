@@ -25,6 +25,10 @@ function Modal({ setIsOpen, type, params }) {
             setModalInput(params.threadTitle);
         }
         
+        if (modalProperties.hasTextInput) {
+            document.getElementById('modal-input').select();
+        }
+        
         // add event listener for input changes
         window.addEventListener('input', handleInputChange);
         // cleanup function to remove event listener
@@ -33,17 +37,25 @@ function Modal({ setIsOpen, type, params }) {
         };
     }, []);
 
-    // close modal if "esc" key is pressed
+    // AI-GENERATED: handle modal submission attempt
+    const handleModalSubmissionAttempt = (e) => {
+        e.stopPropagation(); // AI-GENERATED: prevent event bubbling
+        if ((!modalProperties.hasTextInput) || (modalProperties.hasTextInput && modalInput.trim())) {
+            modalProperties.handleSubmit(e); // AI-GENERATED: call the handleSubmit function
+        }
+    };
+
+    // AI-GENERATED: close modal if "enter" key is pressed
     const handleKeyDown = (event) => {
-        if (event.key === 'Escape') {
-            // these must be in order, because the latter two actually close down components.
+        if (event.key === "Escape") {
             console.log("'Esc' key pressed when modal open");
             params.setShowOptionsButton(false);
             params.setIsDropdownOpen(false);
             setIsOpen(false);
+        } else if (event.key === "Enter") { // AI-GENERATED: check for enter key
+            handleModalSubmissionAttempt(event); // AI-GENERATED: call submission attempt function
         }
     };
-
     window.addEventListener('keydown', handleKeyDown);
 
     // set this, based on the type of the modal. here, just keep track of all the possible properties.
@@ -130,10 +142,7 @@ function Modal({ setIsOpen, type, params }) {
                 </button>
                 {/* SUBMIT button */}
                 <button
-                    // make this clickable only if:
-                        // there is no text input field; or
-                        // there is a text input field, and there is non-whitespace input.
-                    onClick={(!modalProperties.hasTextInput) || (modalProperties.hasTextInput && modalInput.trim()) ? modalProperties.handleSubmit : undefined}
+                    onClick={handleModalSubmissionAttempt}
                     className={`px-4 py-2 ${modalProperties.hasTextInput && !modalInput.trim() ? 'bg-blue-200' : 'bg-blue-500'} rounded text-white`}
                 >
                     {modalProperties.submitButtonName}
