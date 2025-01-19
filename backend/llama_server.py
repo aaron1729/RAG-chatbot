@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 # this implicitly loads the openai API key from the `backend/.env` file.
 load_dotenv()
 # the second argument is the fallback value
+NODE_SERVER_PORT = int(os.environ.get("NODE_SERVER_PORT", 8000))
 PYTHON_SERVER_PORT = int(os.environ.get("PYTHON_SERVER_PORT", 8000))
 SYSTEM_PROMPT = os.environ.get("SYSTEM_PROMPT")
 
@@ -19,7 +20,7 @@ import uvicorn
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[f"http://localhost:{os.environ.get("PYTHON_SERVER_PORT")}"], # only allow requests from the node server
+    allow_origins=[f"http://localhost:{os.environ.get("NODE_SERVER_PORT")}"], # only allow requests from the node server
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
