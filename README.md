@@ -51,7 +51,7 @@ the python fastAPI server listens on port 8000.
 
 ## in prod mode
 
-inside of `frontend/`, run `npm build` to build the vite app into static files. these will appear in `dist/`. serve these files. run the python server as above, and run the node server by doing `node server.js` in `backend/`.
+inside of `frontend/`, run `npm run build` to build the vite app into static files. these will appear in `dist/`. serve these files. run the python server as above, and run the node server by doing `node server.js` in `backend/`.
 
 # to-do
 
