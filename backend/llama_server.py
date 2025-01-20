@@ -120,6 +120,8 @@ async def chat_llama_server(body: dict = Body(...)):
             # this is an object, with attributes: response, sources, source_nodes, metadata
             response_text = response.response
             print(f"{response_text = }")
+            # too much can change (like bouncing between different threads), so just reset each time.
+            chat_engine.reset()
             return {"response": response_text}
         except Exception as e:
             print("in the `except` block for rag chat")
