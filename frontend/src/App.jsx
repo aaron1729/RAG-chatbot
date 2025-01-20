@@ -10,7 +10,7 @@ import { sendMessage, getChatHistory, getUserInfo, indexChats } from './services
 
 // for now this is hard-coded. this occurs here and in `backend/database/init.js`.
 // whenever actually handling it, be sure to handle the logic for adding a new user, and of course ensure that getUserInfo here never returns an empty value.
-const TEMP_USER_ID = 4
+const TEMP_USER_ID = 6
 
 
 function App() {
@@ -129,7 +129,8 @@ function App() {
       console.log("renaming thread")
       const newChatHistory = chatHistory.map(chatThread => {
         if (chatThread.id === threadId) {
-          return {id: chatThread.id, title: title, ragStatus: "NEEDS_UPDATE"}
+          const ragStatus = (chatThread.ragStatus === "UP_TO_DATE") ? "NEEDS_UPDATE" : "NEVER_INDEXED"
+          return {id: chatThread.id, title: title, ragStatus: ragStatus}
         } else {
           return chatThread
         }})

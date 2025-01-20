@@ -11,6 +11,14 @@ const db = new sqlite3.Database('chats.db', (e) => {
 })
 
 
+// AI-GENERATED: inserting a new user with id 6, name jane, and email janedoe@gmail.com
+db.run(`INSERT INTO users (id, username, email, has_rag_index) VALUES (6, "jane", "janedoe@gmail.com", FALSE)`, (e) => {
+    if (e) {
+        console.error("error inserting new user: " + e.message);
+    } else {
+        console.log("new user inserted: jane");
+    }
+});
 
 
 // AI-GENERATED: querying all threads associated with user id 4 and logging their titles
@@ -24,14 +32,14 @@ const db = new sqlite3.Database('chats.db', (e) => {
 //     });
 // });
 
-// AI-GENERATED: updating has_rag_index to false for user with id 4
-db.run("UPDATE users SET has_rag_index = ? WHERE id = ?", [false, 4], function(err) {
-    if (err) {
-        console.error("error updating has_rag_index:", err.message);
-    } else {
-        console.log(`has_rag_index set to false for user with id 4`);
-    }
-});
+// // AI-GENERATED: updating has_rag_index to false for user with id 4
+// db.run("UPDATE users SET has_rag_index = ? WHERE id = ?", [false, 4], function(err) {
+//     if (err) {
+//         console.error("error updating has_rag_index:", err.message);
+//     } else {
+//         console.log(`has_rag_index set to false for user with id 4`);
+//     }
+// });
 
 
 

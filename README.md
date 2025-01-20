@@ -39,6 +39,8 @@ SYSTEM_PROMPT="Your name is Ragnar the RAGbot. You love to use RAG (retrieval-au
 
 # to run
 
+## in dev mode
+
 simultaneously run the frontend and node server by running `npm run dev` in `/`. in a different terminal, start the python server by running `python llama_server.py` in `backend/` (with the virtual environment activated).
 
 the react+vite app is served on port 5173 (vite's default).
@@ -46,6 +48,10 @@ the react+vite app is served on port 5173 (vite's default).
 the node server listens on port 3000.
 
 the python fastAPI server listens on port 8000.
+
+## in prod mode
+
+inside of `frontend/`, run `npm build` to build the vite app into static files. these will appear in `dist/`. serve these files. run the python server as above, and run the node server by doing `node server.js` in `backend/`.
 
 # to-do
 
@@ -65,7 +71,7 @@ the python fastAPI server listens on port 8000.
     - [x] update the index.
     - [x] toggle "RAG chat" on and off.
     - [x] chat with chats!
-- [ ] host on a server!
+- [x] host on a server!
 
 ## stretch goals
 
