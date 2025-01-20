@@ -141,8 +141,10 @@ async def chat_llama_server(body: dict = Body(...)):
 async def index_chats_llama_server(user_id: int = Body(...)):
     print("received a post request to the `/index_chats` endpoint")
     try:
-        index_chats(user_id)
+        index = index_chats(user_id)
         print(f"indexed chats for user {user_id}")
+        if user_id in user_data:
+            user_data[user_id]["index_as_chat_engine"] = index.as_chat_engine()
         try:
             update_rag_status_all_threads(user_id, "UP_TO_DATE")
             return True
