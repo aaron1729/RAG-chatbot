@@ -19,7 +19,7 @@ function TextInput({ input, setInput, handleSubmit, isLoading }) {
                         }
                     }
                 }}
-                placeholder="Compose a message for Claude..."
+                placeholder="Compose a message for Ragnar..."
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                 disabled={isLoading}
             />
