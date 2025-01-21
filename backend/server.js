@@ -104,7 +104,7 @@ app.post("/api/getUserInfo", async (req, res) => {
     const { userId } = req.body
     try {
         const userInfo = await getUserInfo(userId)
-        console.log(`the user info is: ${userInfo}`)
+        console.log(`the user info is: ${JSON.stringify(userInfo)}`)
         // switch from snake case to camel case.
         userInfo.hasRagIndex = userInfo.has_rag_index
         delete userInfo.has_rag_index
